@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleRotateView">
+        <attr name="isRotating" format="boolean" />
+        <attr name="isClockwise" format="boolean" />
+        <attr name="startAngle" format="float" />
+        <attr name="imageSize" format="dimension" />
+        <attr name="rotateDuration" format="integer" />
+    </declare-styleable>
+</resources>
