@@ -11,7 +11,7 @@ import android.view.animation.OvershootInterpolator
 /**
  * Created by igor-lashkov on 12/01/2018.
  */
-class ScaleUpAnimation(private val scaleUpConfig: ScaleUpConfig) {
+internal class ScaleUpAnimation(private val scaleUpConfig: ScaleUpConfig) {
 
     interface OnAnimationEndListener {
         fun onAnimationEnd(animation: Animator)
@@ -27,6 +27,8 @@ class ScaleUpAnimation(private val scaleUpConfig: ScaleUpConfig) {
 
     private var appearAnimator: ValueAnimator? = null
 
+    private val animInterpolator = OvershootInterpolator()
+
     private fun createAppearAnimator(callback: Drawable.Callback, listener: OnAnimationEndListener, appearDuration: Long, from: Float, to: Float): ObjectAnimator {
         val floatProperty = object : FloatProperty<ScaleUpAnimation>("scaleUp") {
             override fun setValue(obj: ScaleUpAnimation, fraction: Float) {
@@ -38,7 +40,7 @@ class ScaleUpAnimation(private val scaleUpConfig: ScaleUpConfig) {
         }
         return ObjectAnimator.ofFloat(this, floatProperty, from, to).apply {
             duration = appearDuration
-            interpolator = OvershootInterpolator()
+            interpolator = animInterpolator
             addListener(
                     object : AnimatorListenerAdapter() {
                         override fun onAnimationCancel(animation: Animator) {
@@ -76,6 +78,7 @@ class ScaleUpAnimation(private val scaleUpConfig: ScaleUpConfig) {
 
     fun stopAnimation() {
         appearAnimator?.let {
+            it.removeAllListeners()
             it.cancel()
             this.isCanceled = true
             this.isRunning = false

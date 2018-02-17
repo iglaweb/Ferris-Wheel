@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,24 +7,24 @@
     android:background="@color/light_blue_gray"
     tools:context="ru.igla.carousel.sample.SampleKotlinActivity">
 
-    <ru.github.igla.carousel.CircleRotateView
-        android:id="@+id/carouselView"
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        app:imageSize="72dp"
-        app:isClockwise="true"
-        app:isRotating="true"
-        app:rotateDuration="60000"
-        app:startAngle="10" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+        <ru.github.igla.carousel.FerrisWheelView
+            android:id="@+id/carouselView"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            app:fwv_cabinSize="42dp"
+            app:fwv_cabinsNumber="8"
+            app:fwv_isClockwise="true"
+            app:fwv_isRotating="true"
+            app:fwv_rotateSpeed="6"
+            app:fwv_startAngle="10" />
 
         <TextView
             android:id="@+id/tvAction"
@@ -32,66 +32,11 @@
             android:layout_height="wrap_content"
             android:minWidth="200dp"
             android:text="Open SampleJava Activity"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="200dp"
-            android:text="Rotate speed:"
-            android:textSize="16sp" />
+    </FrameLayout>
 
-        <SeekBar
-            android:id="@+id/rotateSpeedSeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100000"
-            android:progress="60000" />
+    <include layout="@layout/bottomsheet_settings_attributes" />
 
-        <TextView
-            android:id="@+id/startCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start circle"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/stopCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Stop circle"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/pauseCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="20dp"
-            android:text="Pause circle"
-            android:textColor="@color/green"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/resumeCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Resume circle"
-            android:textColor="@color/green"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CircleRotateView">
-        <attr name="isRotating" format="boolean" />
-        <attr name="isClockwise" format="boolean" />
-        <attr name="startAngle" format="float" />
-        <attr name="imageSize" format="dimension" />
-        <attr name="rotateDuration" format="integer" />
+    <declare-styleable name="FerrisWheelView">
+        <attr name="fwv_isRotating" format="boolean" />
+        <attr name="fwv_isClockwise" format="boolean" />
+        <attr name="fwv_startAngle" format="float" />
+        <attr name="fwv_cabinSize" format="dimension" />
+        <attr name="fwv_cabinsNumber" format="integer" />
+        <attr name="fwv_rotateSpeed" format="integer" />
+        <attr name="fwv_rimStrokeColor" format="color" />
+        <attr name="fwv_wheelStrokeColor" format="color" />
     </declare-styleable>
 </resources>

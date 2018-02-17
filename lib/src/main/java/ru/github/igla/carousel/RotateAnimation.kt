@@ -4,18 +4,19 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.graphics.drawable.Drawable
 import android.util.FloatProperty
+import android.view.animation.LinearInterpolator
 
 /**
  * Created by igor-lashkov on 13/01/2018.
  */
-class RotateAnimation(val viewConfig: CircleViewConfig) {
+internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
+
+    interface OnRotateAngleValueChangeListener {
+        fun onChangeRotateAngle(angle: Float)
+    }
 
     private var currentPlayTime = 0L
-
-    var carouselAngle = 0f
-        private set
 
     var isRunning = false
         private set
@@ -25,12 +26,15 @@ class RotateAnimation(val viewConfig: CircleViewConfig) {
     var wasStarted = false
         private set
 
-    fun startCarouselAnimation(callback: Drawable.Callback) {
+    private val animInterpolator = LinearInterpolator()
+
+    fun startCarouselAnimation(listener: OnRotateAngleValueChangeListener) {
         stopAnimation()
-        if (viewConfig.rotateDuration > 0) {
+        val rotateSpeed = viewConfig.rotateSpeed
+        if (rotateSpeed > 0) {
             animator = createCircleAnimator(
-                    callback,
-                    viewConfig.rotateDuration,
+                    listener,
+                    rotateSpeed,
                     viewConfig.getAngleFrom,
                     viewConfig.getAngleTo).apply {
                 start()
@@ -42,26 +46,24 @@ class RotateAnimation(val viewConfig: CircleViewConfig) {
 
     fun stopAnimation() {
         animator?.let {
+            it.removeAllListeners()
             it.cancel()
             this.isRunning = false
         }
     }
 
-    private fun createCircleAnimator(callback: Drawable.Callback, rotateDuration: Long, from: Float, to: Float): ObjectAnimator {
+    private fun createCircleAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
         val floatProperty = object : FloatProperty<RotateAnimation>("angle") {
             override fun setValue(obj: RotateAnimation, carouselAngle: Float) {
-                if (viewConfig.isRotating) {
-                    obj.carouselAngle = carouselAngle
-                }
-                callback.invalidateDrawable(null)
+                listener.onChangeRotateAngle(carouselAngle)
             }
 
-            override operator fun get(obj: RotateAnimation) = obj.carouselAngle
+            override operator fun get(obj: RotateAnimation): Float = 0f
         }
         return ObjectAnimator.ofFloat(this, floatProperty, from, to).apply {
             currentPlayTime = viewConfig.getDurationOffset
-            duration = rotateDuration
-            interpolator = viewConfig.interpolator
+            duration = getDurationFromSpeed(rotateSpeed)
+            interpolator = animInterpolator
             repeatCount = ValueAnimator.INFINITE
             repeatMode = ValueAnimator.RESTART
             addListener(

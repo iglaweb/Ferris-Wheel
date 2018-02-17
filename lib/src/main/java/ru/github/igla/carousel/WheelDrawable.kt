@@ -3,14 +3,13 @@ package ru.github.igla.carousel
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.graphics.ColorFilter
 
 /**
  * Created by igor-lashkov on 11/01/2018.
  */
-class CircleDrawable(private val context: Context) :
+internal class WheelDrawable(private val context: Context) :
         Drawable(),
-        CircleDrawableListener {
+        WheelDrawableListener {
 
     private var stateController: StateController? = null
 
@@ -26,15 +25,12 @@ class CircleDrawable(private val context: Context) :
         }
     }
 
-    override fun findImageByCoordinates(x: Float, y: Float): CircleImage? = stateController?.getImage(x, y)
+    override fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y)
+            ?: false
 
-    override fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y) ?: false
-
-    fun build(viewConfig: CircleViewConfig) {
-        val drawables = viewConfig.images.map {
-            CustomDrawable(context, it).apply {
-                callback = drawableCallback
-            }
+    fun build(viewConfig: WheelViewConfig) {
+        val drawables = List(viewConfig.cabinsNumber) { index ->
+            CabinDrawable(context, index, viewConfig.rimColor)
         }
         this.stateController = StateController(context, viewConfig, drawables, bounds)
     }
@@ -53,7 +49,7 @@ class CircleDrawable(private val context: Context) :
     }
 
     override fun draw(canvas: Canvas) {
-        stateController?.drawImages(canvas)
+        stateController?.drawWheel(canvas)
     }
 
     override fun setAlpha(alpha: Int) {
