@@ -4,12 +4,15 @@ sudo: false
 language: android
 jdk: oraclejdk8
 
+env:
+ matrix:
+  - ANDROID_BUILD_TOOLS_VERSION=27.0.1 ANDROID_API_LEVEL=27
 android:
   components:
     - platform-tools
     - tools
-    - android-27
-    - build-tools-27.0.1
+    - android-$ANDROID_API_LEVEL
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - extra-android-m2repository
     - extra-android-support
     - sys-img-armeabi-v7a-android-18
@@ -19,6 +22,10 @@ script:
 
 before_install:
   - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-27"
+
+install:
+  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-${ANDROID_API_LEVEL}"
 
 notifications:
   email: true
