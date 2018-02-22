@@ -13,7 +13,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_attributes.*
 import ru.github.igla.carousel.FerrisWheelView
-import ru.github.igla.carousel.ScaleUpConfig
 
 /**
  * Created by igor-lashkov on 11/01/2018.
@@ -33,24 +32,24 @@ class SampleKotlinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initSettingsBottomSheet()
         tvAction.setOnClickListener {
-            startActivity(Intent(this@SampleKotlinActivity, SampleJavaActivity::class.java))
+            startActivity(Intent(this, SampleJavaActivity::class.java))
         }
         startCircle.setOnClickListener {
-            carouselView.startAnimation()
+            ferrisWheelView.startAnimation()
         }
         stopCircle.setOnClickListener {
-            carouselView.stopAnimation()
+            ferrisWheelView.stopAnimation()
         }
         pauseCircle.setOnClickListener {
-            carouselView.pauseAnimation()
+            ferrisWheelView.pauseAnimation()
         }
         resumeCircle.setOnClickListener {
-            carouselView.resumeAnimation()
+            ferrisWheelView.resumeAnimation()
         }
         rotateSpeedSeekBar.apply {
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    carouselView.apply {
+                    ferrisWheelView.apply {
                         stopAnimation()
                         rotateDegreeSpeedInSec = progress
                         startAnimation()
@@ -67,7 +66,7 @@ class SampleKotlinActivity : AppCompatActivity() {
         seekbarNumberOfCabins.apply {
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    carouselView.apply {
+                    ferrisWheelView.apply {
                         stopAnimation()
                         numberOfCabins = progress
                         build()
@@ -86,9 +85,8 @@ class SampleKotlinActivity : AppCompatActivity() {
     }
 
     private fun startCarousel() {
-        carouselView.apply {
+        ferrisWheelView.apply {
             centerListener = this@SampleKotlinActivity.clickCenterListener
-            scaleUpConfig = ScaleUpConfig(true, 800)
             build()
             startAnimation()
         }
@@ -132,5 +130,3 @@ class SampleKotlinActivity : AppCompatActivity() {
     fun Context.toast(message: CharSequence) =
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
-
-

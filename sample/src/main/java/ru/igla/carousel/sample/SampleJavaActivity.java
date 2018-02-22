@@ -19,7 +19,7 @@ public class SampleJavaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_java);
-        ferrisWheelView = findViewById(R.id.carouselView);
+        ferrisWheelView = findViewById(R.id.ferrisWheelView);
         findViewById(R.id.startCircle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

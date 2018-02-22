@@ -28,9 +28,9 @@ internal class WheelDrawable(private val context: Context) :
     override fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y)
             ?: false
 
-    fun build(viewConfig: WheelViewConfig) {
+    fun build(viewConfig: WheelViewContext) {
         val drawables = List(viewConfig.cabinsNumber) { index ->
-            CabinDrawable(context, index, viewConfig.rimColor)
+            CabinDrawable(context, index, viewConfig.cabinColors)
         }
         this.stateController = StateController(context, viewConfig, drawables, bounds)
     }

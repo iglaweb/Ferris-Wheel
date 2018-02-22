@@ -10,7 +10,7 @@ import android.view.animation.LinearInterpolator
 /**
  * Created by igor-lashkov on 13/01/2018.
  */
-internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
+internal class RotateAnimation(private val viewConfig: WheelViewContext) {
 
     interface OnRotateAngleValueChangeListener {
         fun onChangeRotateAngle(angle: Float)
@@ -28,7 +28,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
 
     private val animInterpolator = LinearInterpolator()
 
-    fun startCarouselAnimation(listener: OnRotateAngleValueChangeListener) {
+    fun startAnimation(listener: OnRotateAngleValueChangeListener) {
         stopAnimation()
         val rotateSpeed = viewConfig.rotateSpeed
         if (rotateSpeed > 0) {
@@ -76,7 +76,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         }
     }
 
-    fun pauseCarouselAnimation() {
+    fun pauseAnimation() {
         animator?.let {
             if (it.isRunning) {
                 currentPlayTime = it.currentPlayTime
@@ -86,7 +86,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         }
     }
 
-    fun resumeCarouselAnimation() {
+    fun resumeAnimation() {
         animator?.let {
             if (!it.isRunning) {
                 it.start()

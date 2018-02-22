@@ -1,8 +1,6 @@
 package ru.github.igla.carousel
 
-import android.animation.Animator
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.PointF
 import android.graphics.Rect
@@ -14,33 +12,26 @@ import kotlin.math.pow
  * Created by igor-lashkov on 11/01/2018.
  */
 
-private const val STATE_SCALE_UP = 0
-private const val STATE_ROTATING = 1
-
 internal class StateController(
         val context: Context,
-        private var viewConfig: WheelViewConfig,
+        private var viewConfig: WheelViewContext,
         cabinImages: List<CabinDrawable>,
         bounds: Rect) {
 
     private val wheelBaseDrawer by lazyNonSafe { WheelBaseDrawer(context, viewConfig) }
     private val tiltAnimation by lazyNonSafe { TiltAnimation() }
-    private val scaleUpAnimation by lazyNonSafe { ScaleUpAnimation(viewConfig.scaleUpConfig) }
     private val rotateAnimation by lazyNonSafe { RotateAnimation(viewConfig) }
 
-    private var orientation = Configuration.ORIENTATION_PORTRAIT
+    private var orientation = context.resources.configuration.orientation
 
-    private var currentState = STATE_ROTATING
-
-    private val cabinImages: List<InnerImage>
+    private val cabinImages: List<CabinImage>
 
     init {
-        this.orientation = context.resources.configuration.orientation
         this.cabinImages = getList(cabinImages)
         configure(bounds, orientation)
     }
 
-    private fun getList(images: List<CabinDrawable>): List<InnerImage> {
+    private fun getList(images: List<CabinDrawable>): List<CabinImage> {
         if (images.isEmpty()) {
             return emptyList()
         }
@@ -50,11 +41,7 @@ internal class StateController(
         return List(imgCount) { index ->
             val carouselPos = PointF()
             offsetAngle += rad
-            InnerImage(
-                    images[index],
-                    offsetAngle,
-                    carouselPos,
-                    viewConfig.cabinSize)
+            CabinImage(images[index], offsetAngle, carouselPos, viewConfig.cabinSize)
         }
     }
 
@@ -62,7 +49,6 @@ internal class StateController(
         pauseAnimation()
         configureSizes(bounds)
         if (orientation != this.orientation) {
-            this.currentState = STATE_ROTATING
             resetImagesState()
         }
         this.orientation = orientation
@@ -73,24 +59,20 @@ internal class StateController(
         if (bounds.isEmpty) {
             return
         }
-        configureLayoutPoints(bounds)
-        for (item in cabinImages) {
+        wheelBaseDrawer.configure(bounds)
+        cabinImages.forEachNoIterator { item ->
             val offsetAngle = item.getAngleOffset()
-            wheelBaseDrawer.setPointPosAsWheel(item.carouselPos, offsetAngle)
+            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
         }
     }
 
-    private fun InnerImage.getAngleOffset(): Double = getAngleOffset(wheelBaseDrawer.rotateAngle)
-
-    private fun configureLayoutPoints(rect: Rect) {
-        wheelBaseDrawer.configure(rect)
-    }
+    private fun CabinImage.getAngleOffset(): Double = getAngleOffset(wheelBaseDrawer.rotateAngle)
 
     private fun resetImagesState() {
         cabinImages.forEachNoIterator { item ->
             item.lastSize = viewConfig.cabinSize
             val offset = item.getAngleOffset()
-            wheelBaseDrawer.setPointPosAsWheel(item.carouselPos, offset)
+            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offset)
         }
     }
 
@@ -102,47 +84,29 @@ internal class StateController(
             (x - centerPoint.x).pow(2f) +
                     (y - centerPoint.y).pow(2f) <= radius * radius
 
-    fun isCenterCoordinate(x: Float, y: Float): Boolean = isPointInsideRadius(x, y, wheelBaseDrawer.centerPoint, (wheelBaseDrawer.radius / 2.0).toFloat())
+    fun isCenterCoordinate(x: Float, y: Float): Boolean = isPointInsideRadius(
+            x, y, wheelBaseDrawer.centerPoint, (wheelBaseDrawer.radius / 2.0).toFloat())
 
     fun drawWheel(canvas: Canvas) {
-        if (currentState != STATE_ROTATING) {
-            return
-        }
         wheelBaseDrawer.onPreDraw(canvas)
         cabinImages.forEachNoIterator { item ->
-            item.drawable.drawLineFromCenterTo(canvas, wheelBaseDrawer.centerPoint, item.carouselPos)
             val offsetAngle = item.getAngleOffset()
-            when (currentState) {
-                STATE_ROTATING -> {
-                    wheelBaseDrawer.setPointPosAsWheel(item.carouselPos, offsetAngle)
-                    item.drawable.drawCabin(canvas, item.carouselPos, item.lastSize)
-                }
-            }
+            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
+            item.drawable.drawCabin(canvas, item.wheelPos, item.lastSize.toFloat())
         }
         wheelBaseDrawer.onPostDraw(canvas)
     }
 
     fun startAnimation(callback: Drawable.Callback) {
         if (rotateAnimation.isRunning
-                || scaleUpAnimation.isRunning
                 || cabinImages.isEmpty()) {
             return
         }
-        if (!rotateAnimation.wasStarted && scaleUpAnimation.shouldStartAnim()) {
-            this.currentState = STATE_SCALE_UP
-            scaleUpAnimation.startAnimation(callback, object : ScaleUpAnimation.OnAnimationEndListener {
-                override fun onAnimationEnd(animation: Animator) {
-                    startCarouselAnimation(callback)
-                }
-            })
-        } else {
-            startCarouselAnimation(callback)
-        }
+        startWheelAnimation(callback)
     }
 
-    fun startCarouselAnimation(callback: Drawable.Callback) {
-        this.currentState = STATE_ROTATING
-        rotateAnimation.startCarouselAnimation(object : RotateAnimation.OnRotateAngleValueChangeListener {
+    private fun startWheelAnimation(callback: Drawable.Callback) {
+        rotateAnimation.startAnimation(object : RotateAnimation.OnRotateAngleValueChangeListener {
             override fun onChangeRotateAngle(angle: Float) {
                 wheelBaseDrawer.rotateAngle = angle
                 callback.invalidateDrawable(null)
@@ -159,15 +123,14 @@ internal class StateController(
     }
 
     fun pauseAnimation() {
-        rotateAnimation.pauseCarouselAnimation()
+        rotateAnimation.pauseAnimation()
     }
 
     fun resumeAnimation() {
-        rotateAnimation.resumeCarouselAnimation()
+        rotateAnimation.resumeAnimation()
     }
 
     fun stopAnimation() {
-        scaleUpAnimation.stopAnimation()
         tiltAnimation.cancelAnimation()
         rotateAnimation.stopAnimation()
     }

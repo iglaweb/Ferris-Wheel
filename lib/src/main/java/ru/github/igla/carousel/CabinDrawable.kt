@@ -7,11 +7,9 @@ import android.graphics.*
  * Created by igor-lashkov on 17/01/2018.
  */
 
-internal class CabinDrawable(context: Context, private val imageNumber: Int = 0, rimColor: Int) {
+internal class CabinDrawable(context: Context, private val imageNumber: Int = 0, cabinColors: Array<String>) {
 
     var tiltAngle = 0f
-
-    private val cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
 
     private val dstRect = RectF()
 
@@ -26,12 +24,6 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int = 0,
     private val cabinLinePaint by lazyNonSafe {
         smoothPaint(Color.BLACK).apply {
             style = Paint.Style.FILL
-        }
-    }
-
-    private val lineFromCenterToOuterPaint by lazyNonSafe {
-        smoothPaint(rimColor).apply {
-            strokeWidth = context.dpF(2f)
         }
     }
 
@@ -51,19 +43,13 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int = 0,
         }
     }
 
-    fun drawLineFromCenterTo(canvas: Canvas, start: PointF, end: PointF) {
-        canvas.drawLine(start, end, lineFromCenterToOuterPaint)
-    }
-
-    fun drawCabin(canvas: Canvas, position: PointF, sizeF: Int, fraction: Float = 1f) {
-
+    fun drawCabin(canvas: Canvas, position: PointF, size: Float) {
         canvas.apply {
             save()
 
             val angle = if (imageNumber % 2 == 0) tiltAngle else -tiltAngle
             rotate(angle, position.x, position.y)
 
-            val size = sizeF.toFloat() * fraction
             val halfSize = size / 2.0f
             val leftBorder = position.x - halfSize
             val topBorder = position.y

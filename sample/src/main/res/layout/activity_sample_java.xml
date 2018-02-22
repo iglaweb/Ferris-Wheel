@@ -8,15 +8,14 @@
     tools:context="ru.igla.carousel.sample.SampleJavaActivity">
 
     <ru.github.igla.carousel.FerrisWheelView
-        android:id="@+id/carouselView"
+        android:id="@+id/ferrisWheelView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         app:fwv_cabinSize="42dp"
         app:fwv_cabinsNumber="8"
         app:fwv_isClockwise="true"
-        app:fwv_isRotating="true"
         app:fwv_rotateSpeed="6"
         app:fwv_startAngle="10" />
 

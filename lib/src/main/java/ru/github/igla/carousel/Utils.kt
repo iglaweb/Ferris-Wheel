@@ -2,19 +2,10 @@ package ru.github.igla.carousel
 
 import android.content.Context
 import android.graphics.Paint
-import android.util.Log
 
-
-private const val TAG = "FerrisWheelView"
 
 fun Context.dp(dp: Float): Int = Math.round(dpF(dp))
 fun Context.dpF(dp: Float): Float = dp * resources.displayMetrics.density
-
-internal inline fun log(lambda: () -> String) {
-    if (BuildConfig.DEBUG) {
-        Log.d(TAG, lambda())
-    }
-}
 
 internal fun <T> lazyNonSafe(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
 
