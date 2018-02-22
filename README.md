@@ -6,11 +6,21 @@
 
 ## Overview
 
-Awesome Ferris Wheel!
+An Android Library used to implement an animated Ferris Wheel in android.
 
-- **Written in Kotlin with some optimizations**
-- **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 - **API SDK 15+**
+- **Written in Kotlin**
+- **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
+
+
+## Sample Project
+
+For information : checkout [Sample App Code](https://github.com/iglaweb/Ferris-Wheel/tree/master/sample/) in repository.
+
+
+## Quick Setup
+
+### 1. Include library
 
 
 Use the built in Widget in your XML like this:
@@ -31,12 +41,29 @@ Use the built in Widget in your XML like this:
 ```
 
 
+To run initialization and start animation you need only call this methods:
+
+``` kotlin
+    ferrisWheelView.apply {
+        build()
+        startAnimation()
+    }
+```
+
+Or you can stop/pause/resume animation by the following methods:
+``` kotlin
+    ferrisWheelView.stopAnimation()
+    ferrisWheelView.pauseAnimation()
+    ferrisWheelView.resumeAnimation()
+```
+
+
 ## Attributes
 |attr|format|description|
 |---|:---|:---:|
 |fwv_cabinSize|dimension|the size of each cabin|
-|fwv_cabinsNumber|integer|number of cabins on the wheel|
-|fwv_isClockwise|boolean|tools the rotate direction|
+|fwv_cabinsNumber|integer|the number of cabins on the wheel|
+|fwv_isClockwise|boolean|toogle the rotate direction|
 |fwv_isRotating|boolean|toogle rotation|
 |fwv_rotateSpeed|integer|wheel speed rotation measured in degrees|
 |fwv_startAngle|float|angle at which wheel will start to rotate|
