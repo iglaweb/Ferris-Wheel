@@ -14,12 +14,12 @@ import kotlin.math.pow
 
 internal class StateController(
         val context: Context,
-        private var viewConfig: WheelViewContext,
+        private var viewConfig: WheelViewConfig,
         cabinImages: List<CabinDrawable>,
         bounds: Rect) {
 
     private val wheelBaseDrawer by lazyNonSafe { WheelBaseDrawer(context, viewConfig) }
-    private val tiltAnimation by lazyNonSafe { TiltAnimation() }
+    private val tiltAnimation by lazyNonSafe { TiltAnimation(viewConfig) }
     private val rotateAnimation by lazyNonSafe { RotateAnimation(viewConfig) }
 
     private var orientation = context.resources.configuration.orientation
@@ -41,7 +41,7 @@ internal class StateController(
         return List(imgCount) { index ->
             val carouselPos = PointF()
             offsetAngle += rad
-            CabinImage(images[index], offsetAngle, carouselPos, viewConfig.cabinSize)
+            CabinImage(images[index], offsetAngle, carouselPos)
         }
     }
 
@@ -70,7 +70,6 @@ internal class StateController(
 
     private fun resetImagesState() {
         cabinImages.forEachNoIterator { item ->
-            item.lastSize = viewConfig.cabinSize
             val offset = item.getAngleOffset()
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offset)
         }
@@ -92,7 +91,7 @@ internal class StateController(
         cabinImages.forEachNoIterator { item ->
             val offsetAngle = item.getAngleOffset()
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
-            item.drawable.drawCabin(canvas, item.wheelPos, item.lastSize.toFloat())
+            item.drawable.drawCabin(canvas, item.wheelPos, wheelBaseDrawer.cabinSize.toFloat())
         }
         wheelBaseDrawer.onPostDraw(canvas)
     }

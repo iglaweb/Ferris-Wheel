@@ -8,8 +8,7 @@ import android.graphics.PointF
 internal class CabinImage constructor(
         val drawable: CabinDrawable,
         private val angle: Double = 0.0,
-        var wheelPos: PointF = PointF(),
-        var lastSize: Int
+        var wheelPos: PointF = PointF()
 ) {
     fun getAngleOffset(rotateAngle: Float): Double = (angle + rotateAngle) % 360.0
 }

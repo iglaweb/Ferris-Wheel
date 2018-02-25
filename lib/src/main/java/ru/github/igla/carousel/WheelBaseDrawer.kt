@@ -9,17 +9,23 @@ import kotlin.math.PI
  * Created by igor-lashkov on 11/01/2018.
  */
 
-internal class WheelBaseDrawer(val context: Context, private val config: WheelViewContext) : IWheelDrawer {
+internal class WheelBaseDrawer(val context: Context, private val config: WheelViewConfig) : IWheelDrawer {
 
     private val PILL_ANGLE_FROM = 110.0
     private val PILL_ANGLE_TO = 70.0
 
     private val MIN_RADIUS: Double by lazyNonSafe { (context.dpF(100f)).toDouble() }
+    private val radiusWheelForCabin: Double by lazyNonSafe { (context.dpF(150f)).toDouble() } //for 42dp
 
     var radius = 0.0
         set(value) {
             field = if (value < MIN_RADIUS) MIN_RADIUS else value
         }
+
+
+    private val useCabinAutoSize = false//config.cabinSize == -1
+    private val defaultCabinSize: Int by lazyNonSafe { context.resources.getDimensionPixelSize(R.dimen.fwv_cabin_size) }
+    var cabinSize = defaultCabinSize
 
     val centerPoint by lazyNonSafe { PointF() }
     private var dirtyDraw = true
@@ -109,13 +115,13 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
     }
     private val pathStar by lazyNonSafe { Path() }
 
-    private fun getGroundPadding(): Double = config.cabinSize + CABIN_TILT + dp10 + dp16
+    private fun getGroundPadding(): Double = defaultCabinSize + CABIN_TILT_MAX + dp10 + dp16
 
     private fun getPaddingOutside(): Double = dp6.toDouble()
 
     override fun configure(rect: Rect) {
         val minDiameter = MIN_RADIUS * 2.0
-        val minAvailableWidth = minDiameter + config.cabinSize
+        val minAvailableWidth = minDiameter + defaultCabinSize
         val minAvailableHeight = minDiameter + getGroundPadding()
         val parentWidth = rect.width()
         val parentHeight = rect.height()
@@ -124,7 +130,7 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
             return
         }
         val circleLength = minDiameter * PI
-        if (config.cabinSize * config.cabinsNumber > circleLength) {
+        if (defaultCabinSize * config.cabinsNumber > circleLength) {
             //no space
             return
         }
@@ -132,8 +138,13 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
         val centerX = parentWidth / 2.0f
         val centerY = (parentHeight - getGroundPadding().toFloat()) / 2.0f
         this.centerPoint.set(centerX, centerY)
-        val minSize = minOf(centerX - config.cabinSize / 2f, centerY)
+        val minSize = minOf(centerX - defaultCabinSize / 2f, centerY)
         this.radius = minSize - getPaddingOutside()
+
+        if (useCabinAutoSize) {
+            val ratioSize = this.radius / radiusWheelForCabin
+            this.cabinSize = (defaultCabinSize * ratioSize).toInt()
+        }
 
         dirtyDraw = true
     }
@@ -143,10 +154,13 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
     }
 
     override fun onPostDraw(canvas: Canvas) {
-        canvas.drawCircle(centerPoint, dp16, circleInnerPaint)
-        canvas.drawCircle(centerPoint, dp14, circleInnerPaint2)
+        canvas.apply {
+            drawBase(this)
+            drawCircle(centerPoint, dp16, circleInnerPaint)
+            drawCircle(centerPoint, dp14, circleInnerPaint2)
 
-        canvas.drawPath(pathStar, paintStar)
+            drawPath(pathStar, paintStar)
+        }
     }
 
     override fun onPreDraw(canvas: Canvas) {
@@ -174,15 +188,18 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
                 if (i > 0) {
                     drawLine(patternPointsIn[i], patternPointsOut[i - 1], patternPaint)
                 }
-                canvas.drawLine(centerPoint, patternPointsIn[i], patternPaint)
+                drawLine(centerPoint, patternPointsIn[i], patternPaint)
             }
             drawCircle(centerPoint, getPatternRadiusInner(radiusF).toFloat(), patternPaint)
 
             restore()
+        }
+    }
 
+    private fun drawBase(canvas: Canvas) {
+        canvas.apply {
             drawLine(pillLeftStart1, pillLeftEnd1, pillLinePaint)
             drawLine(pillRightStart2, pillRightEnd2, pillLinePaint)
-
             drawRoundRect(
                     roundRect,
                     dp6,

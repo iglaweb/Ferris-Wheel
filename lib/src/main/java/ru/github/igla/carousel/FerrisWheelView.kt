@@ -27,11 +27,10 @@ class FerrisWheelView @JvmOverloads constructor(
     }
 
     private var cabinColorsDefault = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
-    private val cabinSizeDefault: Int by lazyNonSafe { resources.getDimensionPixelSize(R.dimen.fwv_cabin_size) }
     private val baseColorDefault: Int by lazyNonSafe { getColorRes(context, R.color.fwv_rim_color) }
     private val wheelColorDefault: Int by lazyNonSafe { getColorRes(context, R.color.fwv_wheel_color) }
 
-    private var config = WheelViewContext(baseColor = baseColorDefault, wheelColor = wheelColorDefault, cabinColors = cabinColorsDefault)
+    private var config = WheelViewConfig(baseColor = baseColorDefault, wheelColor = wheelColorDefault, cabinColors = cabinColorsDefault)
 
     var cabinColors: Array<String> = cabinColorsDefault
     var baseColor: Int = 0
@@ -44,7 +43,7 @@ class FerrisWheelView @JvmOverloads constructor(
             field = value
             config.wheelColor = value
         }
-    var cabinSize: Int = cabinSizeDefault
+    var cabinSize: Int = -1
         set(value) {
             field = value
             config.cabinSize = value
@@ -69,21 +68,20 @@ class FerrisWheelView @JvmOverloads constructor(
         }
     var startAngle: Float = 0f
         set(value) {
-            if (value < 0f || value > 360f) {
-                throw ExceptionInInitializerError("Start angle must be between 0 and 360")
+            if (value < 0f) {
+                throw ExceptionInInitializerError("Start angle must be not negative")
             }
             field = value % 360f
             config.startAngle = field
         }
     var rotateDegreeSpeedInSec: Int = DEFAULT_ROTATES_SPEED_DEGREE_IN_SEC
         set(value) {
-            if (value < 0) {
-                throw ExceptionInInitializerError("Rotate duration must be a non-negative integer number")
+            if (value < 0 || value > MAX_ROTATE_SPEED) {
+                throw ExceptionInInitializerError("Rotate speed must be between 0 and 100")
             }
             field = value
             config.rotateSpeed = value
         }
-
 
     private lateinit var wheelDrawable: WheelDrawable
 
@@ -96,7 +94,7 @@ class FerrisWheelView @JvmOverloads constructor(
                     isClockwise = getBoolean(R.styleable.FerrisWheelView_fwv_isClockwise, true)
                     rotateDegreeSpeedInSec = getInt(R.styleable.FerrisWheelView_fwv_rotateSpeed, DEFAULT_ROTATES_SPEED_DEGREE_IN_SEC)
                     startAngle = getFloat(R.styleable.FerrisWheelView_fwv_startAngle, 0f)
-                    cabinSize = getDimensionPixelSize(R.styleable.FerrisWheelView_fwv_cabinSize, cabinSizeDefault)
+                    cabinSize = getDimensionPixelSize(R.styleable.FerrisWheelView_fwv_cabinSize, -1)
                     numberOfCabins = getInt(R.styleable.FerrisWheelView_fwv_cabinsNumber, DEFAULT_CABINS_NUMBER)
                     baseColor = getColor(R.styleable.FerrisWheelView_fwv_baseStrokeColor, baseColorDefault)
                     wheelColor = getColor(R.styleable.FerrisWheelView_fwv_wheelStrokeColor, wheelColorDefault)
@@ -121,7 +119,7 @@ class FerrisWheelView @JvmOverloads constructor(
     }
 
     fun build() {
-        config = WheelViewContext(
+        config = WheelViewConfig(
                 cabinsNumber = this.numberOfCabins,
                 rotateSpeed = this.rotateDegreeSpeedInSec,
                 isClockwise = this.isClockwise,

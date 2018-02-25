@@ -10,7 +10,7 @@ import android.view.animation.LinearInterpolator
 /**
  * Created by igor-lashkov on 13/01/2018.
  */
-internal class RotateAnimation(private val viewConfig: WheelViewContext) {
+internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
 
     interface OnRotateAngleValueChangeListener {
         fun onChangeRotateAngle(angle: Float)
@@ -22,9 +22,6 @@ internal class RotateAnimation(private val viewConfig: WheelViewContext) {
         private set
 
     private var animator: ValueAnimator? = null
-
-    var wasStarted = false
-        private set
 
     private val animInterpolator = LinearInterpolator()
 
@@ -38,7 +35,6 @@ internal class RotateAnimation(private val viewConfig: WheelViewContext) {
                     viewConfig.getAngleFrom,
                     viewConfig.getAngleTo).apply {
                 start()
-                wasStarted = true
                 this@RotateAnimation.isRunning = true
             }
         }
