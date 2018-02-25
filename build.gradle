@@ -4,7 +4,7 @@ buildscript {
 
     ext.versions = [
             'compileSdk'    : 27,
-            'buildTools'    : '27.0.1',
+            'buildTools'    : '27.0.2',
             'minSdk'        : 15,
             'targetSdk'     : 27,
             'supportLibrary': '27.0.2',
