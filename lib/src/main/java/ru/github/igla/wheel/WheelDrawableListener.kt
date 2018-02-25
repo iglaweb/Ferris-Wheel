@@ -1,4 +1,4 @@
-package ru.github.igla.carousel
+package ru.github.igla.wheel
 
 /**
  * Created by igor-lashkov on 10/01/2018.

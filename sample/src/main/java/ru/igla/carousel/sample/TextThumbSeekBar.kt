@@ -9,7 +9,7 @@ import android.graphics.Typeface
 import android.support.v7.widget.AppCompatSeekBar
 import android.text.TextPaint
 import android.util.AttributeSet
-import ru.github.igla.carousel.dp
+import ru.github.igla.wheel.dp
 
 class TextThumbSeekBar @JvmOverloads constructor(
         context: Context,

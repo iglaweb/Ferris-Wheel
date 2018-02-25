@@ -12,7 +12,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_attributes.*
-import ru.github.igla.carousel.FerrisWheelView
+import ru.github.igla.wheel.FerrisWheelView
 
 /**
  * Created by igor-lashkov on 11/01/2018.

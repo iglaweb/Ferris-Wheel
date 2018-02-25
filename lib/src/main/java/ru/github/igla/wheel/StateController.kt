@@ -1,4 +1,4 @@
-package ru.github.igla.carousel
+package ru.github.igla.wheel
 
 import android.content.Context
 import android.graphics.Canvas
