@@ -29,13 +29,10 @@ Use the built in Widget in your XML like this:
     <ru.github.igla.carousel.FerrisWheelView
         android:id="@+id/ferrisWheelView"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        app:fwv_cabinSize="42dp"
         app:fwv_cabinsNumber="8"
         app:fwv_isClockwise="true"
-        app:fwv_isRotating="true"
         app:fwv_rotateSpeed="6"
         app:fwv_startAngle="10" />
 ```
@@ -64,10 +61,10 @@ Or you can stop/pause/resume animation by the following methods:
 |fwv_cabinSize|dimension|the size of each cabin|
 |fwv_cabinsNumber|integer|the number of cabins on the wheel|
 |fwv_isClockwise|boolean|toogle the rotate direction|
-|fwv_isRotating|boolean|toogle rotation|
 |fwv_rotateSpeed|integer|wheel speed rotation measured in degrees|
 |fwv_startAngle|float|angle at which wheel will start to rotate|
 |fwv_wheelStrokeColor|color|with this color the wheel will be filled|
+|fwv_baseStrokeColor|color|with this color the base will be filled|
 
 
 Issues
