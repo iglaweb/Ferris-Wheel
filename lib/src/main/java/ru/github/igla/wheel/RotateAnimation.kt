@@ -29,7 +29,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         stopAnimation()
         val rotateSpeed = viewConfig.rotateSpeed
         if (rotateSpeed > 0) {
-            animator = createCircleAnimator(
+            animator = createAnimator(
                     listener,
                     rotateSpeed,
                     viewConfig.getAngleFrom,
@@ -48,7 +48,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         }
     }
 
-    private fun createCircleAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
+    private fun createAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
         val floatProperty = object : FloatProperty<RotateAnimation>("angle") {
             override fun setValue(obj: RotateAnimation, carouselAngle: Float) {
                 listener.onChangeRotateAngle(carouselAngle)

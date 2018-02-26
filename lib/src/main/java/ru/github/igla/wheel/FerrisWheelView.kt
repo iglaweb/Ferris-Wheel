@@ -103,6 +103,7 @@ class FerrisWheelView @JvmOverloads constructor(
             } else {
                 baseColor = baseColorDefault
                 wheelColor = wheelColorDefault
+                cabinColors = cabinColorsDefault
             }
             wheelDrawable = WheelDrawable(context).apply { callback = this@FerrisWheelView }
             this.setDrawable(wheelDrawable)

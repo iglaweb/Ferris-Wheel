@@ -39,9 +39,8 @@ internal class StateController(
         val rad = 360.0 / imgCount
         var offsetAngle = 0.0
         return List(imgCount) { index ->
-            val carouselPos = PointF()
             offsetAngle += rad
-            CabinImage(images[index], offsetAngle, carouselPos)
+            CabinImage(images[index], offsetAngle)
         }
     }
 

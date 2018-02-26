@@ -7,7 +7,7 @@ import android.graphics.*
  * Created by igor-lashkov on 17/01/2018.
  */
 
-internal class CabinDrawable(context: Context, private val imageNumber: Int = 0, cabinColors: Array<String>) {
+internal class CabinDrawable(context: Context, private val imageNumber: Int, colorFill: String) {
 
     var tiltAngle = 0f
 
@@ -31,8 +31,7 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int = 0,
     private lateinit var cabinPaintFill: Paint
 
     init {
-        val cabinColor = cabinColors[imageNumber % cabinColors.size]
-        Color.parseColor(cabinColor).apply {
+        Color.parseColor(colorFill).apply {
             cabinPaint = smoothPaint(this).apply {
                 strokeWidth = cabinStrokeWidth
                 style = Paint.Style.STROKE

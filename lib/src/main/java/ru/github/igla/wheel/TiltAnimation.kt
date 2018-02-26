@@ -31,7 +31,13 @@ internal class TiltAnimation(private val config: WheelViewConfig) {
 
     fun startAnimation(listener: TiltValueChangeListener) {
         cancelAnimation()
-        val property = object : FloatProperty<TiltValueChangeListener>("scaleUp") {
+        createAnimator(listener, config.rotateSpeed.toFloat()).apply {
+            start()
+        }
+    }
+
+    private fun createAnimator(listener: TiltValueChangeListener, rotateSpeed: Float): ObjectAnimator {
+        val property = object : FloatProperty<TiltValueChangeListener>("angle") {
             override fun setValue(obj: TiltValueChangeListener, value: Float) {
                 listener.onTiltChange(value)
             }
@@ -39,21 +45,19 @@ internal class TiltAnimation(private val config: WheelViewConfig) {
             override fun get(obj: TiltValueChangeListener) = 0f
         }
 
-        val ratioSpeed = config.rotateSpeed.toFloat() / MAX_ROTATE_SPEED
+        val ratioSpeed = rotateSpeed / MAX_ROTATE_SPEED
         val calcAngle = CABIN_TILT_MIN + ratioSpeed * (CABIN_TILT_MAX - CABIN_TILT_MIN)
-
 
         val interpolatedRatioSpeed = durationInterpolator.getInterpolation(ratioSpeed)
         val ratioDuration = maxOf((1f - interpolatedRatioSpeed), 0f)
         val calcDuration = DURATION_TILT_MIN + (ratioDuration * (DURATION_TILT_MAX - DURATION_TILT_MIN)).toLong()
 
-        animator = ObjectAnimator.ofFloat(listener, property, -calcAngle, calcAngle).apply {
+        return ObjectAnimator.ofFloat(listener, property, -calcAngle, calcAngle).apply {
             interpolator = animInterpolator
             duration = calcDuration
             currentPlayTime = calcDuration / 2
             repeatCount = ValueAnimator.INFINITE
             repeatMode = ValueAnimator.REVERSE
-            start()
         }
     }
 

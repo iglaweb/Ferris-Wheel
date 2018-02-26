@@ -29,8 +29,9 @@ internal class WheelDrawable(private val context: Context) :
             ?: false
 
     fun build(viewConfig: WheelViewConfig) {
-        val drawables = List(viewConfig.cabinsNumber) { index ->
-            CabinDrawable(context, index, viewConfig.cabinColors)
+        val drawables = List(viewConfig.cabinsNumber) { number ->
+            val cabinColor = viewConfig.cabinColors[number % viewConfig.cabinColors.size]
+            CabinDrawable(context, number, cabinColor)
         }
         this.stateController = StateController(context, viewConfig, drawables, bounds)
     }

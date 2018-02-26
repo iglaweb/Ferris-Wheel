@@ -191,7 +191,6 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
                 drawLine(centerPoint, patternPointsIn[i], patternPaint)
             }
             drawCircle(centerPoint, getPatternRadiusInner(radiusF).toFloat(), patternPaint)
-
             restore()
         }
     }
