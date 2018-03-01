@@ -1,6 +1,28 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: 'maven-push.gradle'
+
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayRepoName = 'Ferris-Wheel'
+
+    groupId = 'ru.github.igla'
+    libraryName = 'Ferris-Wheel'
+    artifact = 'wheel'
+    libraryVersion = '1.0.0'
+    libraryDescription = 'Simple android library to present an animated ferris wheel'
+
+    siteUrl = 'https://github.com/iglaweb/Ferris-Wheel'
+    gitUrl = 'https://github.com/iglaweb/Ferris-Wheel.git'
+
+    developerId = 'iglaweb'
+    developerName = 'Igor Lashkov'
+    developerEmail = 'igor-lashkov@ya.ru'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    licenses = ["Apache-2.0"]
+}
 
 android {
     compileSdkVersion versions.compileSdk
@@ -10,7 +32,6 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
-
     }
 
     buildTypes {
@@ -25,3 +46,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
 }
+
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
