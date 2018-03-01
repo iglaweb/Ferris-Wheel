@@ -20,7 +20,6 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int, col
     private val cabinCornerRadius by lazyNonSafe { context.dpF(8f) }
     private val arcRadius by lazyNonSafe { context.dpF(8f) }
 
-
     private val cabinLinePaint by lazyNonSafe {
         smoothPaint(Color.BLACK).apply {
             style = Paint.Style.FILL
@@ -42,9 +41,15 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int, col
         }
     }
 
-    fun drawCabin(canvas: Canvas, position: PointF, size: Float) {
+    fun drawCabin(canvas: Canvas, position: PointF, size: Int, scaleRatio: Double) {
         canvas.apply {
             save()
+
+            val scale = scaleRatio.toFloat()
+            val arcRadiusScale = arcRadius * scale
+            val cabinWindowHeightScale = cabinWindowHeight * scale
+            val cabinCornerRadiusScale = cabinCornerRadius * scale
+            val cabinStrokeWidthScale = cabinStrokeWidth * scale
 
             val angle = if (imageNumber % 2 == 0) tiltAngle else -tiltAngle
             rotate(angle, position.x, position.y)
@@ -55,8 +60,7 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int, col
             val rightBorder = position.x + halfSize
             val bottomBorder = position.y + size
 
-
-            val cabinStrokeHalf = cabinStrokeWidth / 2f
+            val cabinStrokeHalf = cabinStrokeWidthScale / 2f
             val cabinTop = topBorder + cabinStrokeHalf
             val cabinBottom = bottomBorder - cabinStrokeHalf
             dstRect.set(
@@ -64,26 +68,25 @@ internal class CabinDrawable(context: Context, private val imageNumber: Int, col
                     cabinTop,
                     rightBorder - cabinStrokeHalf,
                     cabinBottom)
-            drawRoundRect(dstRect, cabinCornerRadius, cabinCornerRadius, cabinPaint) //cabin
-
+            drawRoundRect(dstRect, cabinCornerRadiusScale, cabinCornerRadiusScale, cabinPaint) //cabin
 
             val centerArc = leftBorder + halfSize
-            dstRect.set(centerArc - arcRadius * 0.8f,
-                    cabinTop - arcRadius,
-                    centerArc + arcRadius * 0.8f,
-                    topBorder + arcRadius)
+            dstRect.set(centerArc - arcRadiusScale * 0.8f,
+                    cabinTop - arcRadiusScale,
+                    centerArc + arcRadiusScale * 0.8f,
+                    topBorder + arcRadiusScale)
             drawArc(dstRect, 180f, 180f, true, cabinPaintFill) //top arc
 
             dstRect.set(
                     leftBorder,
-                    cabinTop + cabinWindowHeight,
+                    cabinTop + cabinWindowHeightScale,
                     rightBorder,
                     cabinBottom)
-            drawBottomRoundRect(canvas, dstRect, cabinPaintFill, cabinCornerRadius) //cabin fill
+            drawBottomRoundRect(canvas, dstRect, cabinPaintFill, cabinCornerRadiusScale) //cabin fill
 
 
-            val blackLineTop = bottomBorder - bottomLineOffset - cabinLineHeight
-            val blackLineBottom = bottomBorder - bottomLineOffset
+            val blackLineTop = bottomBorder - (bottomLineOffset + cabinLineHeight) * scaleRatio.toFloat()
+            val blackLineBottom = bottomBorder - bottomLineOffset * scaleRatio.toFloat()
             drawRect(
                     leftBorder,
                     blackLineTop,

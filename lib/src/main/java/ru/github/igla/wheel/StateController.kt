@@ -90,7 +90,12 @@ internal class StateController(
         cabinImages.forEachNoIterator { item ->
             val offsetAngle = item.getAngleOffset()
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
-            item.drawable.drawCabin(canvas, item.wheelPos, wheelBaseDrawer.cabinSize.toFloat())
+            item.drawable.drawCabin(
+                    canvas,
+                    item.wheelPos,
+                    wheelBaseDrawer.cabinSize,
+                    wheelBaseDrawer.ratioCabinSize
+            )
         }
         wheelBaseDrawer.onPostDraw(canvas)
     }

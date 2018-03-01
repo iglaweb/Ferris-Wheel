@@ -22,10 +22,10 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
             field = if (value < MIN_RADIUS) MIN_RADIUS else value
         }
 
-
-    private val useCabinAutoSize = false//config.cabinSize == -1
+    private val useCabinAutoSize = config.cabinSize == -1
     private val defaultCabinSize: Int by lazyNonSafe { context.resources.getDimensionPixelSize(R.dimen.fwv_cabin_size) }
     var cabinSize = defaultCabinSize
+    var ratioCabinSize: Double = 1.0
 
     val centerPoint by lazyNonSafe { PointF() }
     private var dirtyDraw = true
@@ -107,7 +107,6 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
     private val patternPointsOut = Array(patternPoints + 1) { PointF() }
     private val patternPointsIn = Array(patternPoints + 1) { PointF() }
 
-
     private val paintStar by lazyNonSafe {
         smoothPaint(getColorRes(context, R.color.fwv_black)).apply {
             style = Paint.Style.FILL
@@ -142,8 +141,8 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
         this.radius = minSize - getPaddingOutside()
 
         if (useCabinAutoSize) {
-            val ratioSize = this.radius / radiusWheelForCabin
-            this.cabinSize = (defaultCabinSize * ratioSize).toInt()
+            this.ratioCabinSize = this.radius / radiusWheelForCabin
+            this.cabinSize = (defaultCabinSize * ratioCabinSize).toInt()
         }
 
         dirtyDraw = true

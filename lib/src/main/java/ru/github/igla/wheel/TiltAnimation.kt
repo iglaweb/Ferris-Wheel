@@ -22,7 +22,7 @@ internal class TiltAnimation(private val config: WheelViewConfig) {
     }
 
     private val DURATION_TILT_MIN = 400L
-    private val DURATION_TILT_MAX = 700L
+    private val DURATION_TILT_MAX = 800L
 
     private var animator: ValueAnimator? = null
 
