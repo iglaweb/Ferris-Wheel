@@ -1,6 +1,7 @@
 # Ferris Wheel View
 
 [![Build Status][build-status-svg]][build-status-link]
+[![Download](https://api.bintray.com/packages/iglaweb/maven/Ferris-Wheel/images/download.svg)](https://bintray.com/iglaweb/maven/Ferris-Wheel/_latestVersion)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 
@@ -22,11 +23,29 @@ For information : checkout [Sample App Code](https://github.com/iglaweb/Ferris-W
 
 ### 1. Include library
 
+**Using Gradle**
+
+``` gradle
+dependencies {
+    compile 'ru.github.igla:wheel:1.0.0'
+}
+```
+
+**Using Maven**
+
+``` maven
+<dependency>
+  <groupId>ru.github.igla</groupId>
+  <artifactId>wheel</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
 
 Use the built in Widget in your XML like this:
 
 ```xml
-    <ru.github.igla.carousel.FerrisWheelView
+    <ru.github.igla.wheel.FerrisWheelView
         android:id="@+id/ferrisWheelView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
