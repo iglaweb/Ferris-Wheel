@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.github.igla.wheel.FerrisWheelView;
+import ru.github.igla.ferriswheel.FerrisWheelView;
 
 public class SampleJavaActivity extends AppCompatActivity {
 

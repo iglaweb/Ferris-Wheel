@@ -7,7 +7,7 @@
     android:background="@color/light_blue_gray"
     tools:context="ru.igla.carousel.sample.SampleJavaActivity">
 
-    <ru.github.igla.wheel.FerrisWheelView
+    <ru.github.igla.ferriswheel.FerrisWheelView
         android:id="@+id/ferrisWheelView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

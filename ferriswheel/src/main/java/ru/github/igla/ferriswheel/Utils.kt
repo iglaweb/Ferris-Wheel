@@ -1,4 +1,4 @@
-package ru.github.igla.wheel
+package ru.github.igla.ferriswheel
 
 import android.content.Context
 import android.graphics.Paint

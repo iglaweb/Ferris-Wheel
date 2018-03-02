@@ -1,4 +1,4 @@
-package ru.github.igla.wheel
+package ru.github.igla.ferriswheel
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator

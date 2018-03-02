@@ -1,4 +1,4 @@
-package ru.github.igla.wheel
+package ru.github.igla.ferriswheel
 
 /**
  * Created by igor-lashkov on 10/01/2018.

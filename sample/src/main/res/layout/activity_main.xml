@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <ru.github.igla.wheel.FerrisWheelView
+        <ru.github.igla.ferriswheel.FerrisWheelView
             android:id="@+id/ferrisWheelView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
