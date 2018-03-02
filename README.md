@@ -27,7 +27,7 @@ For information : checkout [Sample App Code](https://github.com/iglaweb/Ferris-W
 
 ``` gradle
 dependencies {
-    compile 'ru.github.igla:wheel:1.0.0'
+    compile 'ru.github.igla:ferriswheel:1.0.0'
 }
 ```
 
@@ -36,7 +36,7 @@ dependencies {
 ``` maven
 <dependency>
   <groupId>ru.github.igla</groupId>
-  <artifactId>wheel</artifactId>
+  <artifactId>ferriswheel</artifactId>
   <version>1.0.0</version>
   <type>pom</type>
 </dependency>
@@ -45,7 +45,7 @@ dependencies {
 Use the built in Widget in your XML like this:
 
 ```xml
-    <ru.github.igla.wheel.FerrisWheelView
+    <ru.github.igla.ferriswheel.FerrisWheelView
         android:id="@+id/ferrisWheelView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
