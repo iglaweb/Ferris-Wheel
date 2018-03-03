@@ -13,6 +13,7 @@ An Android Library used to implement an animated Ferris Wheel in android.
 - **Written in Kotlin**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
+![Alt text](/preview/video_wheel_demo.gif "Sample")
 
 ## Sample Project
 
