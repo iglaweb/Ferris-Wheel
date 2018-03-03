@@ -1,6 +1,5 @@
 package ru.igla.carousel.sample
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -23,7 +22,7 @@ class SampleKotlinActivity : AppCompatActivity() {
 
     private val clickCenterListener = object : FerrisWheelView.OnClickCenterListener {
         override fun onClickCenter(e: MotionEvent) {
-            toast("Click CENTER $e")
+            Toast.makeText(this@SampleKotlinActivity, "Click CENTER $e", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -87,6 +86,7 @@ class SampleKotlinActivity : AppCompatActivity() {
     private fun startCarousel() {
         ferrisWheelView.apply {
             centerListener = this@SampleKotlinActivity.clickCenterListener
+            cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50")
             build()
             startAnimation()
         }
@@ -104,14 +104,12 @@ class SampleKotlinActivity : AppCompatActivity() {
         behavior = BottomSheetBehavior.from<View>(bottomSheet).apply {
             setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            image_toggle.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                        }
-                        BottomSheetBehavior.STATE_EXPANDED ->
-                            image_toggle.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                        else -> image_toggle.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                    val res = when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> R.drawable.ic_expand_less_black_24dp
+                        BottomSheetBehavior.STATE_EXPANDED -> R.drawable.ic_expand_more_black_24dp
+                        else -> R.drawable.ic_expand_less_black_24dp
                     }
+                    image_toggle.setImageResource(res)
                 }
 
                 override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
@@ -126,7 +124,4 @@ class SampleKotlinActivity : AppCompatActivity() {
             }
         })
     }
-
-    fun Context.toast(message: CharSequence) =
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }

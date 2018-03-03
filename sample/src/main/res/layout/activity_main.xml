@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_blue_gray"
+    android:background="@color/white"
     tools:context="ru.igla.carousel.sample.SampleKotlinActivity">
 
     <FrameLayout
@@ -19,10 +19,12 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            app:fwv_baseStrokeColor="#666666"
             app:fwv_cabinsNumber="8"
             app:fwv_isClockwise="true"
             app:fwv_rotateSpeed="6"
-            app:fwv_startAngle="10" />
+            app:fwv_startAngle="10"
+            app:fwv_wheelStrokeColor="#7fbfe9" />
 
         <TextView
             android:id="@+id/tvAction"
