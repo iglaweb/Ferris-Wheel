@@ -1,5 +1,6 @@
 # Ferris Wheel View
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Ferris%20Wheel%20View-green.svg?style=flat)](https://android-arsenal.com/details/1/6803)
 [![Build Status][build-status-svg]][build-status-link]
 [![Download](https://api.bintray.com/packages/iglaweb/maven/Ferris-Wheel/images/download.svg)](https://bintray.com/iglaweb/maven/Ferris-Wheel/_latestVersion)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -13,7 +14,7 @@ An Android Library used to implement an animated Ferris Wheel in android.
 - **Written in Kotlin**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
-![Alt text](/preview/video_wheel_demo.gif "Sample")
+![Alt text](/preview/preview_demo.gif "Sample")
 
 ## Sample Project
 
@@ -22,7 +23,7 @@ For information : checkout [Sample App Code](https://github.com/iglaweb/Ferris-W
 
 ## Quick Setup
 
-### 1. Include library
+### Include library
 
 **Using Gradle**
 
@@ -43,6 +44,7 @@ dependencies {
 </dependency>
 ```
 
+### Usage
 Use the built in Widget in your XML like this:
 
 ```xml
