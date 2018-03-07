@@ -1,7 +1,5 @@
 package ru.github.igla.ferriswheel
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.util.FloatProperty
@@ -16,14 +14,14 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         fun onChangeRotateAngle(angle: Float)
     }
 
-    private var currentPlayTime = 0L
-
-    var isRunning = false
-        private set
+    private var lastChangeAngle: Float = viewConfig.startAngle
 
     private var animator: ValueAnimator? = null
 
     private val animInterpolator = LinearInterpolator()
+
+    var isRunning = animator?.isRunning ?: false
+        private set
 
     fun startAnimation(listener: OnRotateAngleValueChangeListener) {
         stopAnimation()
@@ -35,7 +33,6 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
                     viewConfig.getAngleFrom,
                     viewConfig.getAngleTo).apply {
                 start()
-                this@RotateAnimation.isRunning = true
             }
         }
     }
@@ -44,50 +41,42 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         animator?.let {
             it.removeAllListeners()
             it.cancel()
-            this.isRunning = false
+            this.lastChangeAngle = 0f
         }
     }
 
     private fun createAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
         val floatProperty = object : FloatProperty<RotateAnimation>("angle") {
-            override fun setValue(obj: RotateAnimation, carouselAngle: Float) {
-                listener.onChangeRotateAngle(carouselAngle)
+            override fun setValue(obj: RotateAnimation, angle: Float) {
+                lastChangeAngle = angle
+                listener.onChangeRotateAngle(angle)
             }
 
             override operator fun get(obj: RotateAnimation): Float = 0f
         }
         return ObjectAnimator.ofFloat(this, floatProperty, from, to).apply {
-            currentPlayTime = viewConfig.getDurationOffset
+            currentPlayTime = viewConfig.getDurationOffset(lastChangeAngle)
             duration = getDurationFromSpeed(rotateSpeed)
             interpolator = animInterpolator
             repeatCount = ValueAnimator.INFINITE
             repeatMode = ValueAnimator.RESTART
-            addListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationCancel(animation: Animator) = onAnimationEnd(animation)
-                        override fun onAnimationEnd(animation: Animator) {
-                            this@RotateAnimation.isRunning = false
-                        }
-                    })
         }
     }
 
     fun pauseAnimation() {
         animator?.let {
             if (it.isRunning) {
-                currentPlayTime = it.currentPlayTime
                 it.cancel()
-                this.isRunning = false
             }
         }
     }
 
     fun resumeAnimation() {
-        animator?.let {
-            if (!it.isRunning) {
-                it.start()
-                it.currentPlayTime = currentPlayTime
-                this.isRunning = true
+        animator?.apply {
+            if (!isRunning) {
+                duration = getDurationFromSpeed(viewConfig.rotateSpeed)
+                currentPlayTime = viewConfig.getDurationOffset(lastChangeAngle)
+                start()
             }
         }
     }

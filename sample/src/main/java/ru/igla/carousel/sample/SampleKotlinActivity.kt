@@ -49,9 +49,9 @@ class SampleKotlinActivity : AppCompatActivity() {
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     ferrisWheelView.apply {
-                        stopAnimation()
+                        pauseAnimation()
                         rotateDegreeSpeedInSec = progress
-                        startAnimation()
+                        resumeAnimation()
                     }
                 }
 
