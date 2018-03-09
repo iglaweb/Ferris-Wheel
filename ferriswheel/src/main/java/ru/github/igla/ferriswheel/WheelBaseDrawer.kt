@@ -9,7 +9,7 @@ import kotlin.math.PI
  * Created by igor-lashkov on 11/01/2018.
  */
 
-internal class WheelBaseDrawer(val context: Context, private val config: WheelViewConfig) : IWheelDrawer {
+internal class WheelBaseDrawer(private val context: Context, private val config: WheelViewConfig) : IWheelDrawer {
 
     private val PILL_ANGLE_FROM = 110.0
     private val PILL_ANGLE_TO = 70.0
@@ -107,6 +107,8 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
     private val patternPointsOut = Array(patternPoints + 1) { PointF() }
     private val patternPointsIn = Array(patternPoints + 1) { PointF() }
 
+    private val linePoints by lazyNonSafe { FloatArray((patternPoints + 1) * 4 * 2 + patternPoints * 4) }
+
     private val paintStar by lazyNonSafe {
         smoothPaint(getColorRes(context, R.color.fwv_black)).apply {
             style = Paint.Style.FILL
@@ -167,7 +169,7 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
         val radiusF = radius.toFloat()
 
         if (dirtyDraw) {
-            calcNewCenter(centerPoint, radiusF)
+            calcNewPosition(centerPoint, radiusF)
             dirtyDraw = false
         }
 
@@ -182,15 +184,34 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
 
             drawCircle(centerPoint, radiusF, circleOuterPaint)
 
-            for (i in 0..patternPoints) {
-                drawLine(patternPointsOut[i], patternPointsIn[i], patternPaint)
-                if (i > 0) {
-                    drawLine(patternPointsIn[i], patternPointsOut[i - 1], patternPaint)
-                }
-                drawLine(centerPoint, patternPointsIn[i], patternPaint)
-            }
+            drawLines(linePoints, patternPaint)
+
             drawCircle(centerPoint, getPatternRadiusInner(radiusF).toFloat(), patternPaint)
             restore()
+        }
+    }
+
+
+    private fun setLineAtIndex(arr: FloatArray, index: Int, line1: PointF, line2: PointF) {
+        arr[index] = line1.x
+        arr[index + 1] = line1.y
+        arr[index + 2] = line2.x
+        arr[index + 3] = line2.y
+    }
+
+    private fun fillArrayWithData() {
+        var n = 0
+        var i = 0
+        while (i <= patternPoints) {
+            setLineAtIndex(linePoints, n, patternPointsOut[i], patternPointsIn[i])
+            n += 4
+            if (i > 0) {
+                setLineAtIndex(linePoints, n, patternPointsIn[i], patternPointsOut[i - 1])
+                n += 4
+            }
+            setLineAtIndex(linePoints, n, centerPoint, patternPointsIn[i])
+            n += 4
+            i++
         }
     }
 
@@ -206,7 +227,7 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
         }
     }
 
-    private fun calcNewCenter(centerPoint: PointF, radius: Float) {
+    private fun calcNewPosition(centerPoint: PointF, radius: Float) {
 
         setPointPos(pillLeftStart1, centerPoint, PILL_ANGLE_TO, dp16.toDouble())
         setPointPos(pillRightStart2, centerPoint, PILL_ANGLE_FROM, dp16.toDouble())
@@ -237,10 +258,12 @@ internal class WheelBaseDrawer(val context: Context, private val config: WheelVi
             angle1 += stepBy
             angle2 += stepBy
         }
-        calcStarPath(centerPoint, dp32)
+        measureStarPath(centerPoint, dp32)
+
+        fillArrayWithData()
     }
 
-    private fun calcStarPath(centerPoint: PointF, size: Float) {
+    private fun measureStarPath(centerPoint: PointF, size: Float) {
         val half = size / 2f
         val fromX = centerPoint.x - half
         val fromY = centerPoint.y - half

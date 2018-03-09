@@ -59,18 +59,15 @@ internal class StateController(
             return
         }
         wheelBaseDrawer.configure(bounds)
-        cabinImages.forEachNoIterator { item ->
-            val offsetAngle = item.getAngleOffset()
-            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
-        }
+        resetImagesState()
     }
 
     private fun CabinImage.getAngleOffset(): Double = getAngleOffset(wheelBaseDrawer.rotateAngle)
 
     private fun resetImagesState() {
         cabinImages.forEachNoIterator { item ->
-            val offset = item.getAngleOffset()
-            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offset)
+            val offsetAngle = item.getAngleOffset()
+            wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
         }
     }
 
