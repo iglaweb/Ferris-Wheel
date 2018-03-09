@@ -1,4 +1,4 @@
-package ru.igla.carousel.sample
+package ru.igla.ferriswheel.sample
 
 import android.content.Context
 import android.graphics.Canvas

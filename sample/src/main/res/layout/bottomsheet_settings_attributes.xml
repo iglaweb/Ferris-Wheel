@@ -63,7 +63,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <ru.igla.carousel.sample.TextThumbSeekBar
+                <ru.igla.ferriswheel.sample.TextThumbSeekBar
                     android:id="@+id/rotateSpeedSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <ru.igla.carousel.sample.TextThumbSeekBar
+                <ru.igla.ferriswheel.sample.TextThumbSeekBar
                     android:id="@+id/seekbarNumberOfCabins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

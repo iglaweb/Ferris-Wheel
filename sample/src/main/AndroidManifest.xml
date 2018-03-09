@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.igla.carousel.sample">
+    package="ru.igla.ferriswheel.sample">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ru.igla.carousel.sample.SampleKotlinActivity"
+            android:name="ru.igla.ferriswheel.sample.SampleKotlinActivity"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ru.igla.carousel.sample.SampleJavaActivity"
+            android:name="ru.igla.ferriswheel.sample.SampleJavaActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
