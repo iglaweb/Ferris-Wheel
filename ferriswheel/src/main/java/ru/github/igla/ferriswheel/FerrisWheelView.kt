@@ -18,12 +18,22 @@ import android.view.View
 internal const val DEFAULT_CABINS_NUMBER = 8
 internal const val DEFAULT_ROTATES_SPEED_DEGREE_IN_SEC = 6
 
-class FerrisWheelView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr) {
+class FerrisWheelView : View {
 
     interface OnClickCenterListener {
         fun onClickCenter(e: MotionEvent)
+    }
+
+    constructor(context: Context) : super(context) {
+        initView(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initView(context, attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, attributeSetId: Int) : super(context, attrs, attributeSetId) {
+        initView(context, attrs)
     }
 
     private var cabinColorsDefault = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
@@ -87,7 +97,7 @@ class FerrisWheelView @JvmOverloads constructor(
 
     private var gestureDetector: GestureDetector? = null
 
-    init {
+    private fun initView(context: Context, attrs: AttributeSet? = null) {
         if (!isInEditMode) {
             if (attrs != null) {
                 context.obtainStyledAttributes(attrs, R.styleable.FerrisWheelView)?.apply {
