@@ -11,7 +11,7 @@
 An Android Library used to implement an animated Ferris Wheel in android.
 
 - **API SDK 15+**
-- **Written in Kotlin**
+- **Written in [Kotlin](https://kotlinlang.org)**
 - **Supports landscape mode**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
@@ -28,7 +28,11 @@ For more information how to use the library in Kotlin/Java checkout [Sample App]
 
 **Using Gradle**
 
+FerrisWheelView is distributed using [jcenter](https://bintray.com/iglaweb/maven/Ferris-Wheel).
 ``` gradle
+repositories { 
+    jcenter()
+}
 dependencies {
     implementation 'ru.github.igla:ferriswheel:1.0.1'
 }
@@ -56,8 +60,7 @@ Add widget in your xml layout like this:
         android:layout_gravity="center"
         app:fwv_cabinsNumber="8"
         app:fwv_isClockwise="true"
-        app:fwv_rotateSpeed="6"
-        app:fwv_startAngle="10" />
+        app:fwv_rotateSpeed="6" />
 ```
 
 
@@ -91,8 +94,7 @@ Issues
 ------
 
 If you find any problems or would like to suggest a feature, please
-feel free to file an issue on github at
-https://github.com/iglaweb/Ferris-Wheel/issues
+feel free to file an [issue](https://github.com/iglaweb/Ferris-Wheel/issues)
 
 ## License
 
