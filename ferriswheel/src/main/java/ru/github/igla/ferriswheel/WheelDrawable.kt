@@ -8,8 +8,7 @@ import android.graphics.drawable.Drawable
  * Created by igor-lashkov on 11/01/2018.
  */
 internal class WheelDrawable(private val context: Context) :
-        Drawable(),
-        WheelDrawableListener {
+        Drawable() {
 
     private var stateController: StateController? = null
 
@@ -18,22 +17,22 @@ internal class WheelDrawable(private val context: Context) :
     private val drawableCallback = object : Callback {
         override fun invalidateDrawable(who: Drawable?) = invalidateSelf()
 
-        override fun unscheduleDrawable(who: Drawable?, what: Runnable?) {
+        override fun unscheduleDrawable(who: Drawable?, what: Runnable) {
         }
 
-        override fun scheduleDrawable(who: Drawable?, what: Runnable?, time: Long) {
+        override fun scheduleDrawable(who: Drawable?, what: Runnable, time: Long) {
         }
     }
 
-    override fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y)
+    fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y)
             ?: false
 
     fun build(viewConfig: WheelViewConfig) {
-        val drawables = List(viewConfig.cabinsNumber) { number ->
-            val cabinColor = viewConfig.cabinColors[number % viewConfig.cabinColors.size]
-            CabinDrawable(context, number, cabinColor)
+        if (stateController == null) {
+            stateController = StateController(drawableCallback, context, viewConfig, bounds)
+        } else {
+            stateController?.setData(viewConfig)
         }
-        this.stateController = StateController(context, viewConfig, drawables, bounds)
     }
 
     fun getLocationCenter(point: PointF) {
@@ -71,7 +70,7 @@ internal class WheelDrawable(private val context: Context) :
 
     fun startAnimation() {
         throwExceptionIfNotBuild()
-        stateController?.startAnimation(drawableCallback)
+        stateController?.startAnimation()
     }
 
     fun stopAnimation() {

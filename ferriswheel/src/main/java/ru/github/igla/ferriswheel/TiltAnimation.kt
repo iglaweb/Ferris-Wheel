@@ -15,7 +15,7 @@ import android.view.animation.LinearInterpolator
 internal const val CABIN_TILT_MIN = 1.0f
 internal const val CABIN_TILT_MAX = 3.0f
 
-internal class TiltAnimation(private val config: WheelViewConfig) {
+internal class TiltAnimation {
 
     interface TiltValueChangeListener {
         fun onTiltChange(angle: Float)
@@ -29,9 +29,9 @@ internal class TiltAnimation(private val config: WheelViewConfig) {
     private val animInterpolator = LinearInterpolator()
     private val durationInterpolator = DecelerateInterpolator()
 
-    fun startAnimation(listener: TiltValueChangeListener) {
+    fun startAnimation(rotateSpeed: Int, listener: TiltValueChangeListener) {
         cancelAnimation()
-        createAnimator(listener, config.rotateSpeed.toFloat()).apply {
+        createAnimator(listener, rotateSpeed.toFloat()).apply {
             start()
         }
     }

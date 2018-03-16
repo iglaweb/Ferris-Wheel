@@ -3,6 +3,8 @@ package ru.github.igla.ferriswheel
 import android.content.Context
 import android.graphics.*
 import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 /**
@@ -31,7 +33,6 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private var dirtyDraw = true
 
     var rotateAngle = 0f
-
 
     private val baseGroundPaint by lazyNonSafe {
         smoothPaint(config.baseColor).apply {
@@ -110,7 +111,7 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private val linePoints by lazyNonSafe { FloatArray((patternPoints + 1) * 4 * 2 + patternPoints * 4) }
 
     private val paintStar by lazyNonSafe {
-        smoothPaint(getColorRes(context, R.color.fwv_black)).apply {
+        smoothPaint(context.getColorRes(R.color.fwv_black)).apply {
             style = Paint.Style.FILL
         }
     }
@@ -159,7 +160,6 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
             drawBase(this)
             drawCircle(centerPoint, dp16, circleInnerPaint)
             drawCircle(centerPoint, dp14, circleInnerPaint2)
-
             drawPath(pathStar, paintStar)
         }
     }
@@ -190,7 +190,6 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
             restore()
         }
     }
-
 
     private fun setLineAtIndex(arr: FloatArray, index: Int, line1: PointF, line2: PointF) {
         arr[index] = line1.x
@@ -264,10 +263,11 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     }
 
     private fun measureStarPath(centerPoint: PointF, size: Float) {
-        val half = size / 2f
-        val fromX = centerPoint.x - half
-        val fromY = centerPoint.y - half
         pathStar.apply {
+            val half = size / 2f
+            val fromX = centerPoint.x - half
+            val fromY = centerPoint.y - half
+
             rewind()
             // top left
             moveTo(fromX + half * 0.5f, fromY + half * 0.84f)
@@ -287,4 +287,27 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
 
     private fun getPatternRadiusOuter(radius: Float): Double = radius - circleOuterPaint.strokeWidth / 2.0
     private fun getPatternRadiusInner(radius: Float): Double = getPatternRadiusOuter(radius) - dp16
+
+
+    private fun Canvas.drawLine(p1: PointF, p2: PointF, paint: Paint) {
+        drawLine(p1.x, p1.y, p2.x, p2.y, paint)
+    }
+
+    private fun Canvas.drawCircle(point: PointF, radius: Float, paint: Paint) {
+        drawCircle(point.x, point.y, radius, paint)
+    }
+
+    private fun setPointPos(outPoint: PointF, centerPoint: PointF, angle: Double, radius: Double) {
+        outPoint.x = getXPos(centerPoint.x, radius, angle).toFloat()
+        outPoint.y = getYPos(centerPoint.y, radius, angle).toFloat()
+    }
+
+    /***
+     * https://en.wikipedia.org/wiki/Sine#Relation_to_the_unit_circle
+     */
+    private fun getXPos(centerX: Float, R: Double, angle: Double): Double = centerX + R * cos(getRadians(angle))
+
+    private fun getYPos(centerY: Float, R: Double, angle: Double): Double = centerY + R * sin(getRadians(angle))
+
+    private fun getRadians(angle: Double): Double = Math.toRadians(angle)
 }

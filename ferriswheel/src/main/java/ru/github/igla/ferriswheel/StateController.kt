@@ -13,34 +13,40 @@ import kotlin.math.pow
  */
 
 internal class StateController(
-        val context: Context,
+        private val callback: Drawable.Callback,
+        private val context: Context,
         private var viewConfig: WheelViewConfig,
-        cabinImages: List<CabinDrawable>,
         bounds: Rect) {
 
+    private var lastBounds: Rect = bounds
+    private var cabinImages: List<CabinImage>
     private val wheelBaseDrawer by lazyNonSafe { WheelBaseDrawer(context, viewConfig) }
-    private val tiltAnimation by lazyNonSafe { TiltAnimation(viewConfig) }
+    private val tiltAnimation by lazyNonSafe { TiltAnimation() }
     private val rotateAnimation by lazyNonSafe { RotateAnimation(viewConfig) }
 
     private var orientation = context.resources.configuration.orientation
 
-    private val cabinImages: List<CabinImage>
-
     init {
-        this.cabinImages = getList(cabinImages)
+        cabinImages = createListOfCabins(viewConfig)
         configure(bounds, orientation)
     }
 
-    private fun getList(images: List<CabinDrawable>): List<CabinImage> {
-        if (images.isEmpty()) {
+    fun setData(viewConfig: WheelViewConfig) {
+        cabinImages = createListOfCabins(viewConfig)
+        configure(lastBounds, orientation)
+    }
+
+    private fun createListOfCabins(viewConfig: WheelViewConfig): List<CabinImage> {
+        if (viewConfig.cabinsNumber == 0) {
             return emptyList()
         }
-        val imgCount = images.size
+        val imgCount = viewConfig.cabinsNumber
         val rad = 360.0 / imgCount
         var offsetAngle = 0.0
-        return List(imgCount) { index ->
+        return List(imgCount) { number ->
+            val cabinColor = viewConfig.cabinColors[number % viewConfig.cabinColors.size]
             offsetAngle += rad
-            CabinImage(images[index], offsetAngle)
+            CabinImage(context, number, offsetAngle, cabinColor)
         }
     }
 
@@ -51,6 +57,7 @@ internal class StateController(
             resetImagesState()
         }
         this.orientation = orientation
+        this.lastBounds = bounds
         resumeAnimation()
     }
 
@@ -87,7 +94,7 @@ internal class StateController(
         cabinImages.forEachNoIterator { item ->
             val offsetAngle = item.getAngleOffset()
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
-            item.drawable.drawCabin(
+            item.drawCabin(
                     canvas,
                     item.wheelPos,
                     wheelBaseDrawer.cabinSize,
@@ -97,29 +104,30 @@ internal class StateController(
         wheelBaseDrawer.onPostDraw(canvas)
     }
 
-    fun startAnimation(callback: Drawable.Callback) {
+
+    private val rotateListener = object : RotateAnimation.OnRotateAngleValueChangeListener {
+        override fun onChangeRotateAngle(angle: Float) {
+            wheelBaseDrawer.rotateAngle = angle
+            callback.invalidateDrawable(null)
+        }
+    }
+
+    private val tiltListener = object : TiltAnimation.TiltValueChangeListener {
+        override fun onTiltChange(angle: Float) {
+            cabinImages.forEachNoIterator { item ->
+                item.tiltAngle = angle
+            }
+            callback.invalidateDrawable(null)
+        }
+    }
+
+    fun startAnimation() {
         if (rotateAnimation.isRunning
                 || cabinImages.isEmpty()) {
             return
         }
-        startWheelAnimation(callback)
-    }
-
-    private fun startWheelAnimation(callback: Drawable.Callback) {
-        rotateAnimation.startAnimation(object : RotateAnimation.OnRotateAngleValueChangeListener {
-            override fun onChangeRotateAngle(angle: Float) {
-                wheelBaseDrawer.rotateAngle = angle
-                callback.invalidateDrawable(null)
-            }
-        })
-        tiltAnimation.startAnimation(object : TiltAnimation.TiltValueChangeListener {
-            override fun onTiltChange(angle: Float) {
-                cabinImages.forEachNoIterator { item ->
-                    item.drawable.tiltAngle = angle
-                }
-                callback.invalidateDrawable(null)
-            }
-        })
+        rotateAnimation.startAnimation(rotateListener)
+        tiltAnimation.startAnimation(viewConfig.rotateSpeed, tiltListener)
     }
 
     fun pauseAnimation() {

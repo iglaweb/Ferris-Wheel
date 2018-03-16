@@ -18,11 +18,10 @@ internal class WheelViewConfig(
         var wheelColor: Int,
         var cabinColors: Array<String>
 ) {
-
     val getAngleFrom: Float get() = if (isClockwise) 0f else 360f
     val getAngleTo: Float = if (isClockwise) 360f else 0f
 
     fun getDurationOffset(angle: Float): Long = if (angle == 0f) 0L else ((angle / 360f) * getDurationFromSpeed(rotateSpeed)).toLong()
 }
 
-fun getDurationFromSpeed(rotateSpeed: Int): Long = if (rotateSpeed == 0) 0L else (360 / rotateSpeed) * 1000L
+internal fun getDurationFromSpeed(rotateSpeed: Int): Long = if (rotateSpeed == 0) 0L else (360 / rotateSpeed) * 1000L

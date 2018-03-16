@@ -24,25 +24,17 @@ class FerrisWheelView : View {
         fun onClickCenter(e: MotionEvent)
     }
 
-    constructor(context: Context) : super(context) {
-        initView(context)
-    }
+    private val cabinColorsDefault = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
+    private val baseColorDefault: Int by lazyNonSafe { context.getColorRes(R.color.fwv_rim_color) }
+    private val wheelColorDefault: Int by lazyNonSafe { context.getColorRes(R.color.fwv_wheel_color) }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        initView(context, attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, attributeSetId: Int) : super(context, attrs, attributeSetId) {
-        initView(context, attrs)
-    }
-
-    private var cabinColorsDefault = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
-    private val baseColorDefault: Int by lazyNonSafe { getColorRes(context, R.color.fwv_rim_color) }
-    private val wheelColorDefault: Int by lazyNonSafe { getColorRes(context, R.color.fwv_wheel_color) }
-
-    private var config = WheelViewConfig(baseColor = baseColorDefault, wheelColor = wheelColorDefault, cabinColors = cabinColorsDefault)
+    private var config: WheelViewConfig = WheelViewConfig(baseColor = baseColorDefault, wheelColor = wheelColorDefault, cabinColors = cabinColorsDefault)
 
     var cabinColors: Array<String> = cabinColorsDefault
+        set(value) {
+            field = if (value.isEmpty()) cabinColorsDefault else value
+            config.cabinColors = field
+        }
     var baseColor: Int = 0
         set(value) {
             field = value
@@ -79,7 +71,7 @@ class FerrisWheelView : View {
     var startAngle: Float = 0f
         set(value) {
             if (value < 0f) {
-                throw ExceptionInInitializerError("Start angle must be not negative")
+                throw ExceptionInInitializerError("Start angle must not be negative")
             }
             field = value % 360f
             config.startAngle = field
@@ -96,6 +88,18 @@ class FerrisWheelView : View {
     private lateinit var wheelDrawable: WheelDrawable
 
     private var gestureDetector: GestureDetector? = null
+
+    constructor(context: Context) : super(context) {
+        initView(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initView(context, attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, attributeSetId: Int) : super(context, attrs, attributeSetId) {
+        initView(context, attrs)
+    }
 
     private fun initView(context: Context, attrs: AttributeSet? = null) {
         if (!isInEditMode) {
@@ -115,8 +119,15 @@ class FerrisWheelView : View {
                 wheelColor = wheelColorDefault
                 cabinColors = cabinColorsDefault
             }
-            wheelDrawable = WheelDrawable(context).apply { callback = this@FerrisWheelView }
-            this.setDrawable(wheelDrawable)
+            this.gestureDetector = GestureDetector(context, InteractGestureListener
+            { e ->
+                config.centerListener?.let { performClickWheel(it, e) } ?: false
+            })
+            wheelDrawable = WheelDrawable(context).apply {
+                callback = this@FerrisWheelView
+            }
+            this@FerrisWheelView.setDrawable(wheelDrawable)
+            wheelDrawable.build(config)
         }
     }
 
@@ -127,25 +138,6 @@ class FerrisWheelView : View {
         } else {
             background = drawable
         }
-    }
-
-    fun build() {
-        config = WheelViewConfig(
-                cabinsNumber = this.numberOfCabins,
-                rotateSpeed = this.rotateDegreeSpeedInSec,
-                isClockwise = this.isClockwise,
-                cabinSize = this.cabinSize,
-                startAngle = this.startAngle,
-                centerListener = this.centerListener,
-                baseColor = this.baseColor,
-                wheelColor = this.wheelColor,
-                cabinColors = this.cabinColors
-        )
-        this.gestureDetector = GestureDetector(context, InteractGestureListener
-        { e ->
-            config.centerListener?.let { performClickWheel(it, e) } ?: false
-        })
-        this.wheelDrawable.build(config)
     }
 
     private fun performClickWheel(listener: OnClickCenterListener, e: MotionEvent): Boolean {
@@ -165,11 +157,21 @@ class FerrisWheelView : View {
         wheelDrawable.getLocationCenter(point)
     }
 
-    fun startAnimation() = wheelDrawable.startAnimation()
+    fun startAnimation() {
+        wheelDrawable.apply {
+            build(config)
+            startAnimation()
+        }
+    }
 
     fun stopAnimation() = wheelDrawable.stopAnimation()
 
-    fun resumeAnimation() = wheelDrawable.resumeAnimation()
+    fun resumeAnimation() {
+        wheelDrawable.apply {
+            build(config)
+            resumeAnimation()
+        }
+    }
 
     fun pauseAnimation() = wheelDrawable.pauseAnimation()
 
@@ -190,10 +192,10 @@ class FerrisWheelView : View {
 }
 
 @Suppress("DEPRECATION")
-fun getColorRes(context: Context, id: Int): Int {
+internal fun Context.getColorRes(id: Int): Int {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        context.getColor(id)
+        getColor(id)
     } else {
-        context.resources.getColor(id)
+        resources.getColor(id)
     }
 }

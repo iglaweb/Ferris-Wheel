@@ -16,6 +16,7 @@ import ru.github.igla.ferriswheel.FerrisWheelView
 /**
  * Created by igor-lashkov on 11/01/2018.
  */
+
 class SampleKotlinActivity : AppCompatActivity() {
 
     private lateinit var behavior: BottomSheetBehavior<View>
@@ -30,6 +31,10 @@ class SampleKotlinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initSettingsBottomSheet()
+        ferrisWheelView.apply {
+            centerListener = this@SampleKotlinActivity.clickCenterListener
+            cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50")
+        }
         tvAction.setOnClickListener {
             startActivity(Intent(this, SampleJavaActivity::class.java))
         }
@@ -46,7 +51,7 @@ class SampleKotlinActivity : AppCompatActivity() {
             ferrisWheelView.resumeAnimation()
         }
         rotateSpeedSeekBar.apply {
-            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            setOnSeekBarChangeListener(object : SeekbarProgressListener() {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     ferrisWheelView.apply {
                         pauseAnimation()
@@ -54,41 +59,30 @@ class SampleKotlinActivity : AppCompatActivity() {
                         resumeAnimation()
                     }
                 }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                }
             })
         }
         seekbarNumberOfCabins.apply {
-            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            setOnSeekBarChangeListener(object : SeekbarProgressListener() {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     ferrisWheelView.apply {
-                        stopAnimation()
+                        pauseAnimation()
                         numberOfCabins = progress
-                        build()
-                        startAnimation()
+                        resumeAnimation()
                     }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
                 }
             })
         }
-        startCarousel()
+        ferrisWheelView.startAnimation()
     }
 
-    private fun startCarousel() {
-        ferrisWheelView.apply {
-            centerListener = this@SampleKotlinActivity.clickCenterListener
-            cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50")
-            build()
-            startAnimation()
+    open class SeekbarProgressListener : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
         }
     }
 
@@ -105,7 +99,6 @@ class SampleKotlinActivity : AppCompatActivity() {
             setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
                     val res = when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> R.drawable.ic_expand_less_black_24dp
                         BottomSheetBehavior.STATE_EXPANDED -> R.drawable.ic_expand_more_black_24dp
                         else -> R.drawable.ic_expand_less_black_24dp
                     }

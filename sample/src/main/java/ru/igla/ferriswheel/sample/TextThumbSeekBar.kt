@@ -11,11 +11,12 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import ru.github.igla.ferriswheel.dp
 
-class TextThumbSeekBar @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = android.R.attr.seekBarStyle) :
-        AppCompatSeekBar(context, attrs, defStyleAttr) {
+class TextThumbSeekBar :
+        AppCompatSeekBar {
+
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, attributeSetId: Int) : super(context, attrs, attributeSetId)
 
     private val thumbSize = context.dp(16f)
     private val textPaint: TextPaint = TextPaint().apply {

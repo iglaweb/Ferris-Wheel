@@ -34,7 +34,6 @@ public class SampleJavaActivity extends AppCompatActivity {
         });
         ferrisWheelView.setCenterListener(clickListener);
         ferrisWheelView.setCabinColors(new String[]{"#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50"});
-        ferrisWheelView.build();
         ferrisWheelView.startAnimation();
     }
 
