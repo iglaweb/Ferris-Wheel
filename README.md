@@ -30,7 +30,7 @@ For more information how to use the library in Kotlin/Java checkout [Sample App]
 
 ``` gradle
 dependencies {
-    implementation 'ru.github.igla:ferriswheel:1.0.0'
+    implementation 'ru.github.igla:ferriswheel:1.0.1'
 }
 ```
 
@@ -40,7 +40,7 @@ dependencies {
 <dependency>
   <groupId>ru.github.igla</groupId>
   <artifactId>ferriswheel</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -61,13 +61,10 @@ Add widget in your xml layout like this:
 ```
 
 
-To run initialization and start animation you need only call this methods:
+To start animation you need only call this method:
 
 ``` kotlin
-    ferrisWheelView.apply {
-        build()
-        startAnimation()
-    }
+    ferrisWheelView.startAnimation()
 ```
 
 Or you can stop/pause/resume animation by the following methods:
