@@ -5,6 +5,8 @@
 [![Download](https://api.bintray.com/packages/iglaweb/maven/Ferris-Wheel/images/download.svg)](https://bintray.com/iglaweb/maven/Ferris-Wheel/_latestVersion)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+![image](/art/logo.png)
+
 
 ## Overview
 
@@ -15,7 +17,7 @@ An Android Library used to implement an animated Ferris Wheel in android.
 - **Supports landscape mode**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
-![Alt text](/preview/preview_demo.gif "Sample")
+![Alt text](/art/preview_demo.gif "Sample")
 
 ## Sample Project
 
