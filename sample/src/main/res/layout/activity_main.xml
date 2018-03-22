@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="ru.igla.ferriswheel.sample.SampleKotlinActivity">
+    tools:context=".SampleKotlinActivity">
 
     <FrameLayout
         android:id="@+id/content"

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#034472"
+    android:fitsSystemWindows="true"
+    tools:context=".SampleKotlinActivityMonochrome">
+
+    <ru.github.igla.ferriswheel.FerrisWheelView
+        android:id="@+id/ferrisWheelView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        app:fwv_baseStrokeColor="@color/white"
+        app:fwv_cabinFillColor="@color/white"
+        app:fwv_cabinLineStrokeColor="@color/white"
+        app:fwv_cabinsNumber="10"
+        app:fwv_isClockwise="true"
+        app:fwv_rotateSpeed="30"
+        app:fwv_wheelStrokeColor="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:indeterminate="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="10dp"
+        android:text="Loading..."
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</FrameLayout>

@@ -10,7 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ru.igla.ferriswheel.sample.SampleKotlinActivity"
+            android:name=".SampleKotlinActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SampleKotlinActivityMonochrome"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ru.igla.ferriswheel.sample.SampleJavaActivity"
+            android:name=".SampleJavaActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 

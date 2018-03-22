@@ -1,6 +1,7 @@
 package ru.igla.ferriswheel.sample
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.NonNull
 import android.support.design.widget.BottomSheetBehavior
@@ -11,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_attributes.*
+import ru.github.igla.ferriswheel.CabinStyle
 import ru.github.igla.ferriswheel.FerrisWheelView
 
 /**
@@ -33,7 +35,9 @@ class SampleKotlinActivity : AppCompatActivity() {
         initSettingsBottomSheet()
         ferrisWheelView.apply {
             centerListener = this@SampleKotlinActivity.clickCenterListener
-            cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50")
+            cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50").map { color ->
+                CabinStyle(Color.parseColor(color), Color.BLACK)
+            }
         }
         tvAction.setOnClickListener {
             startActivity(Intent(this, SampleJavaActivity::class.java))
