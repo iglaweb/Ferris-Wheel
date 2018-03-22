@@ -9,7 +9,7 @@ ext {
     groupId = 'ru.github.igla'
     libraryName = 'Ferris-Wheel'
     artifact = 'ferriswheel'
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.1-SNAPSHOT'
     libraryDescription = 'Simple android library to present an animated ferris wheel'
 
     siteUrl = 'https://github.com/iglaweb/Ferris-Wheel'
