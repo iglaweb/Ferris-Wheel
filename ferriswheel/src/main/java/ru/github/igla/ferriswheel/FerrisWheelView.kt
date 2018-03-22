@@ -2,6 +2,7 @@ package ru.github.igla.ferriswheel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -24,13 +25,30 @@ class FerrisWheelView : View {
         fun onClickCenter(e: MotionEvent)
     }
 
-    private val cabinColorsDefault = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58")
-    private val baseColorDefault: Int by lazyNonSafe { context.getColorRes(R.color.fwv_rim_color) }
-    private val wheelColorDefault: Int by lazyNonSafe { context.getColorRes(R.color.fwv_wheel_color) }
+    private val cabinColorsDefault: List<CabinStyle> = resources.getStringArray(R.array.cabin_colors_array).map { color ->
+        CabinStyle(Color.parseColor(color), cabinLineColorDefault)
+    }
+    private val cabinLineColorDefault: Int = context.getColorRes(R.color.fwv_cabin_line_color)
+    private val baseColorDefault: Int = context.getColorRes(R.color.fwv_base_color)
+    private val wheelColorDefault: Int = context.getColorRes(R.color.fwv_wheel_color)
+    private val coreStyleDefault: CoreStyle = CoreStyle(
+            context.getColorRes(R.color.fwv_star_bg_color),
+            baseColorDefault,
+            StarIcon(context.getColorRes(R.color.fwv_star_fill_color))
+    )
 
-    private var config: WheelViewConfig = WheelViewConfig(baseColor = baseColorDefault, wheelColor = wheelColorDefault, cabinColors = cabinColorsDefault)
+    private var config: WheelViewConfig = WheelViewConfig(
+            baseColor = baseColorDefault,
+            wheelColor = wheelColorDefault,
+            cabinColors = cabinColorsDefault,
+            coreStyle = coreStyleDefault)
 
-    var cabinColors: Array<String> = cabinColorsDefault
+    var coreStyle: CoreStyle = coreStyleDefault
+        set(value) {
+            field = value
+            config.coreStyle = value
+        }
+    var cabinColors: List<CabinStyle> = cabinColorsDefault
         set(value) {
             field = if (value.isEmpty()) cabinColorsDefault else value
             config.cabinColors = field
@@ -39,6 +57,11 @@ class FerrisWheelView : View {
         set(value) {
             field = value
             config.baseColor = value
+            coreStyle = CoreStyle(
+                    coreStyle.colorCircleFill,
+                    value,
+                    coreStyle.starIcon
+            )
         }
     var wheelColor: Int = 0
         set(value) {
@@ -50,6 +73,7 @@ class FerrisWheelView : View {
             field = value
             config.cabinSize = value
         }
+
     var centerListener: FerrisWheelView.OnClickCenterListener? = null
         set(value) {
             field = value
@@ -109,6 +133,13 @@ class FerrisWheelView : View {
                     rotateDegreeSpeedInSec = getInt(R.styleable.FerrisWheelView_fwv_rotateSpeed, DEFAULT_ROTATES_SPEED_DEGREE_IN_SEC)
                     startAngle = getFloat(R.styleable.FerrisWheelView_fwv_startAngle, 0f)
                     cabinSize = getDimensionPixelSize(R.styleable.FerrisWheelView_fwv_cabinSize, -1)
+
+                    if (hasValue(R.styleable.FerrisWheelView_fwv_cabinFillColor)) {
+                        val cabinColorFill = getColor(R.styleable.FerrisWheelView_fwv_cabinFillColor, 0)
+                        val cabinColorLineStroke = getColor(R.styleable.FerrisWheelView_fwv_cabinLineStrokeColor, cabinLineColorDefault)
+                        cabinColors = listOf(CabinStyle(cabinColorFill, cabinColorLineStroke))
+                    }
+
                     numberOfCabins = getInt(R.styleable.FerrisWheelView_fwv_cabinsNumber, DEFAULT_CABINS_NUMBER)
                     baseColor = getColor(R.styleable.FerrisWheelView_fwv_baseStrokeColor, baseColorDefault)
                     wheelColor = getColor(R.styleable.FerrisWheelView_fwv_wheelStrokeColor, wheelColorDefault)

@@ -16,79 +16,64 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private val PILL_ANGLE_FROM = 110.0
     private val PILL_ANGLE_TO = 70.0
 
-    private val MIN_RADIUS: Double by lazyNonSafe { (context.dpF(100f)).toDouble() }
-    private val radiusWheelForCabin: Double by lazyNonSafe { (context.dpF(150f)).toDouble() } //for 42dp
+    private val dp6 = context.dpF(6f)
+    private val dp10 = context.dpF(10f).toDouble()
+    private val dp14 = context.dpF(14f)
+    private val dp16 = context.dpF(16f)
+    private val dp56 = context.dpF(56f)
+    private val dp28 = context.dpF(28f)
+    private val dp32 = context.dpF(32f)
+    private val dp34 = context.dpF(34f)
+
+    private val minRadius: Double = context.dpF(100f).toDouble()
+    private val radiusWheelForCabin: Double = context.dpF(150f).toDouble() //for 42dp
 
     var radius = 0.0
         set(value) {
-            field = if (value < MIN_RADIUS) MIN_RADIUS else value
+            field = if (value < minRadius) minRadius else value
         }
 
     private val useCabinAutoSize = config.cabinSize == -1
-    private val defaultCabinSize: Int by lazyNonSafe { context.resources.getDimensionPixelSize(R.dimen.fwv_cabin_size) }
+    private val defaultCabinSize: Int = context.resources.getDimensionPixelSize(R.dimen.fwv_cabin_size)
     var cabinSize = defaultCabinSize
     var ratioCabinSize: Double = 1.0
 
-    val centerPoint by lazyNonSafe { PointF() }
+    val centerPoint = PointF()
     private var dirtyDraw = true
 
     var rotateAngle = 0f
 
-    private val baseGroundPaint by lazyNonSafe {
-        smoothPaint(config.baseColor).apply {
-            style = Paint.Style.FILL
-        }
+    private val baseGroundPaint = smoothPaint(config.baseColor).apply {
+        style = Paint.Style.FILL
     }
 
-    private val patternPaint by lazyNonSafe {
-        smoothPaint(config.wheelColor).apply {
-            strokeWidth = context.dpF(2f)
-            style = Paint.Style.STROKE
-        }
+    private val patternPaint = smoothPaint(config.wheelColor).apply {
+        strokeWidth = context.dpF(2f)
+        style = Paint.Style.STROKE
     }
 
-    private val innerCirclePaint by lazyNonSafe {
-        smoothPaint(config.wheelColor).apply {
-            strokeWidth = dp6
-            style = Paint.Style.STROKE
-        }
+    private val innerCirclePaint = smoothPaint(config.wheelColor).apply {
+        strokeWidth = dp6
+        style = Paint.Style.STROKE
     }
 
-    private val pillLinePaint by lazyNonSafe {
-        smoothPaint(config.baseColor).apply {
-            strokeWidth = context.dpF(8f)
-            style = Paint.Style.STROKE
-        }
+    private val pillLinePaint = smoothPaint(config.baseColor).apply {
+        strokeWidth = context.dpF(8f)
+        style = Paint.Style.STROKE
     }
 
-    private val circleOuterPaint by lazyNonSafe {
-        smoothPaint(config.wheelColor).apply {
-            strokeWidth = dp6
-            style = Paint.Style.STROKE
-        }
+    private val circleOuterPaint = smoothPaint(config.wheelColor).apply {
+        strokeWidth = dp6
+        style = Paint.Style.STROKE
     }
 
-    private val circleInnerPaint by lazyNonSafe {
-        smoothPaint(config.wheelColor).apply {
-            strokeWidth = context.dpF(4f)
-            style = Paint.Style.STROKE
-        }
+    private val circleInnerPaintStroke = smoothPaint(config.coreStyle.colorCircleStroke).apply {
+        strokeWidth = context.dpF(4f)
+        style = Paint.Style.STROKE
     }
-
-    private val circleInnerPaint2 by lazyNonSafe {
-        smoothPaint(Color.parseColor("#96D0B6")).apply {
-            style = Paint.Style.FILL
-        }
+    private val circleInnerPaintFill = smoothPaint(config.coreStyle.colorCircleFill).apply {
+        style = Paint.Style.FILL
     }
-
-    private val dp6 by lazyNonSafe { context.dpF(6f) }
-    private val dp14 by lazyNonSafe { context.dpF(14f) }
-    private val dp16 by lazyNonSafe { context.dpF(16f) }
-    private val dp56 by lazyNonSafe { context.dpF(56f) }
-    private val dp28 by lazyNonSafe { context.dpF(28f) }
-    private val dp32 by lazyNonSafe { context.dpF(32f) }
-    private val dp34 by lazyNonSafe { context.dpF(34f) }
-    private val dp10 by lazyNonSafe { context.dpF(10f).toDouble() }
 
     private val pillLeftStart1 = PointF()
     private val pillRightStart2 = PointF()
@@ -108,10 +93,12 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private val patternPointsOut = Array(patternPoints + 1) { PointF() }
     private val patternPointsIn = Array(patternPoints + 1) { PointF() }
 
-    private val linePoints by lazyNonSafe { FloatArray((patternPoints + 1) * 4 * 2 + patternPoints * 4) }
+    private val linePoints = FloatArray((patternPoints + 1) * 4 * 2 + patternPoints * 4)
 
     private val paintStar by lazyNonSafe {
-        smoothPaint(context.getColorRes(R.color.fwv_black)).apply {
+        val color = config.coreStyle.starIcon?.colorFill
+                ?: context.getColorRes(R.color.fwv_star_fill_color)
+        smoothPaint(color).apply {
             style = Paint.Style.FILL
         }
     }
@@ -122,7 +109,7 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private fun getPaddingOutside(): Double = dp6.toDouble()
 
     override fun configure(rect: Rect) {
-        val minDiameter = MIN_RADIUS * 2.0
+        val minDiameter = minRadius * 2.0
         val minAvailableWidth = minDiameter + defaultCabinSize
         val minAvailableHeight = minDiameter + getGroundPadding()
         val parentWidth = rect.width()
@@ -158,9 +145,11 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     override fun onPostDraw(canvas: Canvas) {
         canvas.apply {
             drawBase(this)
-            drawCircle(centerPoint, dp16, circleInnerPaint)
-            drawCircle(centerPoint, dp14, circleInnerPaint2)
-            drawPath(pathStar, paintStar)
+            drawCircle(centerPoint, dp16, circleInnerPaintStroke)
+            drawCircle(centerPoint, dp14, circleInnerPaintFill)
+            if (config.coreStyle.starIcon != null) {
+                drawPath(pathStar, paintStar)
+            }
         }
     }
 

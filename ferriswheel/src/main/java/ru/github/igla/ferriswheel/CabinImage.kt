@@ -7,7 +7,7 @@ import android.graphics.*
  * Created by igor-lashkov on 17/01/2018.
  */
 
-internal class CabinImage(context: Context, private val imageNumber: Int, private val startAngle: Double, colorFill: String) {
+internal class CabinImage(context: Context, private val imageNumber: Int, private val startAngle: Double, colorStyle: CabinStyle) {
 
     val wheelPos: PointF = PointF()
 
@@ -15,24 +15,21 @@ internal class CabinImage(context: Context, private val imageNumber: Int, privat
 
     private val dstRect = RectF()
 
-    private val bottomLineOffset by lazyNonSafe { context.dpF(14f) }
-    private val cabinLineHeight by lazyNonSafe { context.dpF(8f) }
-    private val cabinWindowHeight by lazyNonSafe { context.dpF(24f) }
-    private val cabinStrokeWidth by lazyNonSafe { context.dpF(6f) }
-    private val cabinCornerRadius by lazyNonSafe { context.dpF(8f) }
-    private val arcRadius by lazyNonSafe { context.dpF(8f) }
+    private val bottomLineOffset = context.dpF(14f)
+    private val cabinLineHeight = context.dpF(8f)
+    private val cabinWindowHeight = context.dpF(24f)
+    private val cabinStrokeWidth = context.dpF(6f)
+    private val cabinCornerRadius = context.dpF(8f)
+    private val arcRadius = context.dpF(8f)
 
-    private val cabinLinePaint by lazyNonSafe {
-        smoothPaint(Color.BLACK).apply {
-            style = Paint.Style.FILL
-        }
+    private var cabinLinePaint: Paint = smoothPaint(colorStyle.colorLineStroke).apply {
+        style = Paint.Style.FILL
     }
-
     private lateinit var cabinPaint: Paint
     private lateinit var cabinPaintFill: Paint
 
     init {
-        Color.parseColor(colorFill).apply {
+        colorStyle.colorFill.apply {
             cabinPaint = smoothPaint(this).apply {
                 strokeWidth = cabinStrokeWidth
                 style = Paint.Style.STROKE
@@ -45,11 +42,9 @@ internal class CabinImage(context: Context, private val imageNumber: Int, privat
 
     fun getAngleOffset(rotateAngle: Float): Double = (startAngle + rotateAngle) % 360.0
 
-    fun drawCabin(canvas: Canvas, position: PointF, size: Int, scaleRatio: Double) {
+    fun drawCabin(canvas: Canvas, position: PointF, size: Int, scale: Float) {
         canvas.apply {
             save()
-
-            val scale = scaleRatio.toFloat()
             val arcRadiusScale = arcRadius * scale
             val cabinWindowHeightScale = cabinWindowHeight * scale
             val cabinCornerRadiusScale = cabinCornerRadius * scale
@@ -88,9 +83,8 @@ internal class CabinImage(context: Context, private val imageNumber: Int, privat
                     cabinBottom)
             drawBottomRoundRect(canvas, dstRect, cabinPaintFill, cabinCornerRadiusScale) //cabin fill
 
-
-            val blackLineTop = bottomBorder - (bottomLineOffset + cabinLineHeight) * scaleRatio.toFloat()
-            val blackLineBottom = bottomBorder - bottomLineOffset * scaleRatio.toFloat()
+            val blackLineTop = bottomBorder - (bottomLineOffset + cabinLineHeight) * scale
+            val blackLineBottom = bottomBorder - bottomLineOffset * scale
             drawRect(
                     leftBorder,
                     blackLineTop,

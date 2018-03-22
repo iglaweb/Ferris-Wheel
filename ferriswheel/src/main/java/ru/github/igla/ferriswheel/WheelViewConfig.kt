@@ -16,7 +16,8 @@ internal class WheelViewConfig(
         var centerListener: FerrisWheelView.OnClickCenterListener? = null,
         var baseColor: Int,
         var wheelColor: Int,
-        var cabinColors: Array<String>
+        var cabinColors: List<CabinStyle>,
+        var coreStyle: CoreStyle
 ) {
     val getAngleFrom: Float get() = if (isClockwise) 0f else 360f
     val getAngleTo: Float = if (isClockwise) 360f else 0f

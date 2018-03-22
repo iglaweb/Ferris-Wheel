@@ -69,11 +69,11 @@ internal class StateController(
         resetImagesState()
     }
 
-    private fun CabinImage.getAngleOffset(): Double = getAngleOffset(wheelBaseDrawer.rotateAngle)
+    private fun getAngleOffset(cabinImage: CabinImage): Double = cabinImage.getAngleOffset(wheelBaseDrawer.rotateAngle)
 
     private fun resetImagesState() {
         cabinImages.forEachNoIterator { item ->
-            val offsetAngle = item.getAngleOffset()
+            val offsetAngle = getAngleOffset(item)
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
         }
     }
@@ -92,13 +92,13 @@ internal class StateController(
     fun drawWheel(canvas: Canvas) {
         wheelBaseDrawer.onPreDraw(canvas)
         cabinImages.forEachNoIterator { item ->
-            val offsetAngle = item.getAngleOffset()
+            val offsetAngle = getAngleOffset(item)
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
             item.drawCabin(
                     canvas,
                     item.wheelPos,
                     wheelBaseDrawer.cabinSize,
-                    wheelBaseDrawer.ratioCabinSize
+                    wheelBaseDrawer.ratioCabinSize.toFloat()
             )
         }
         wheelBaseDrawer.onPostDraw(canvas)

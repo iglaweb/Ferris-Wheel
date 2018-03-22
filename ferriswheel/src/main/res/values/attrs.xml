@@ -8,5 +8,7 @@
         <attr name="fwv_rotateSpeed" format="integer" />
         <attr name="fwv_baseStrokeColor" format="color" />
         <attr name="fwv_wheelStrokeColor" format="color" />
+        <attr name="fwv_cabinFillColor" format="color" />
+        <attr name="fwv_cabinLineStrokeColor" format="color" />
     </declare-styleable>
 </resources>

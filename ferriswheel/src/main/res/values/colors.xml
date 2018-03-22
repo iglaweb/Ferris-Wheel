@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="fwv_black">#000000</color>
-    <color name="fwv_rim_color">#73302b</color>
+    <color name="fwv_star_bg_color">#96D0B6</color>
+    <color name="fwv_star_fill_color">#000000</color>
+    <color name="fwv_base_color">#666666</color>
     <color name="fwv_wheel_color">#73302b</color>
+    <color name="fwv_cabin_line_color">#000000</color>
 </resources>

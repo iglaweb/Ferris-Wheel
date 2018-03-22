@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cabin_colors_array">
+        <item>#6eabdf</item>
+        <item>#ffb140</item>
+        <item>#ce4d5b</item>
+        <item>#96bd58</item>
+        <item>#ed7a50</item>
+    </string-array>
+</resources>
