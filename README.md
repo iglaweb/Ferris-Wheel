@@ -87,10 +87,10 @@ Or you can stop/pause/resume animation by the following methods:
 |fwv_isClockwise|boolean|true|toogle the rotate direction|
 |fwv_rotateSpeed|integer|6|wheel speed rotation measured in degrees|
 |fwv_startAngle|float|0|angle at which wheel will start to rotate|
-|fwv_wheelStrokeColor|color|#73302b|with this color the wheel will be filled|
-|fwv_baseStrokeColor|color|#666666|with this color the wheel base will be filled|
-|fwv_cabinFillColor|color|#6eabdf,#ffb140,#ce4d5b,#96bd58,#ed7a50|with this color the cabin will be filled|
-|fwv_cabinLineStrokeColor|color|#000000|with this color the cabin line will be filled|
+|fwv_wheelStrokeColor|color|![#73302b](https://placehold.it/15/73302b/000000?text=+) `#73302b`|with this color the wheel will be filled|
+|fwv_baseStrokeColor|color| ![#666666](https://placehold.it/15/666666/000000?text=+) `#666666`|with this color the wheel base will be filled|
+|fwv_cabinFillColor|color|[array](https://github.com/iglaweb/Ferris-Wheel/blob/master/ferriswheel/src/main/res/values/arrays.xml)|with this color the cabin will be filled|
+|fwv_cabinLineStrokeColor|color|![#000000](https://placehold.it/15/000000/000000?text=+) `#000000`|with this color the cabin line will be filled|
 
 Issues
 ------
