@@ -17,7 +17,8 @@ An Android Library used to implement an animated Ferris Wheel in android.
 - **Supports landscape mode**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
-![Preview-demo](/art/preview_demo.gif "Preview demo")  ![Monochrome-sa](/art/preview_demo_monochrome.gif "Monochrome sample")
+![Preview-demo](/art/preview_demo.gif "Preview demo")  ![Monochrome-sample](/art/preview_demo_monochrome.gif "Monochrome sample")<br />
+Inspired by the one-color [Planet Coaster loading screen](https://youtu.be/5zHhW5TLW2s)
 
 ## Sample Project
 
