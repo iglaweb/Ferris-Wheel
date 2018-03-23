@@ -61,7 +61,6 @@ Add widget in your xml layout like this:
         android:layout_height="match_parent"
         android:layout_gravity="center"
         app:fwv_cabinsNumber="8"
-        app:fwv_isClockwise="true"
         app:fwv_rotateSpeed="6" />
 ```
 
@@ -81,16 +80,17 @@ Or you can stop/pause/resume animation by the following methods:
 
 
 ## Attributes
-|attr|format|description|
-|---|:---|:---:|
-|fwv_cabinSize|dimension|the size of each cabin|
-|fwv_cabinsNumber|integer|the number of cabins on the wheel|
-|fwv_isClockwise|boolean|toogle the rotate direction|
-|fwv_rotateSpeed|integer|wheel speed rotation measured in degrees|
-|fwv_startAngle|float|angle at which wheel will start to rotate|
-|fwv_wheelStrokeColor|color|with this color the wheel will be filled|
-|fwv_baseStrokeColor|color|with this color the base will be filled|
-
+|attr|format|default|description|
+|---|:---|:---|:---:|
+|fwv_cabinSize|dimension|42dp|the size of each cabin|
+|fwv_cabinsNumber|integer|8|the number of cabins on the wheel|
+|fwv_isClockwise|boolean|true|toogle the rotate direction|
+|fwv_rotateSpeed|integer|6|wheel speed rotation measured in degrees|
+|fwv_startAngle|float|0|angle at which wheel will start to rotate|
+|fwv_wheelStrokeColor|color|#73302b|with this color the wheel will be filled|
+|fwv_baseStrokeColor|color|#666666|with this color the wheel base will be filled|
+|fwv_cabinFillColor|color|#6eabdf,#ffb140,#ce4d5b,#96bd58,#ed7a50|with this color the cabin will be filled|
+|fwv_cabinLineStrokeColor|color|#000000|with this color the cabin line will be filled|
 
 Issues
 ------
