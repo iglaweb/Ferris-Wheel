@@ -17,7 +17,7 @@ An Android Library used to implement an animated Ferris Wheel in android.
 - **Supports landscape mode**
 - **Lightweight view with 1 drawable inside, uses canvas 2D drawing technique**
 
-![Alt text](/art/preview_demo.gif "Sample")
+![Preview-demo](/art/preview_demo.gif "Preview demo")  ![Monochrome-sa](/art/preview_demo_monochrome.gif "Monochrome sample")
 
 ## Sample Project
 
