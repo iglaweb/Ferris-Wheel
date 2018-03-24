@@ -8,7 +8,7 @@ buildscript {
             'minSdk'        : 15,
             'targetSdk'     : 27,
             'supportLibrary': '27.1.0',
-            'kotlin'        : '1.2.30'
+            'kotlin'        : '1.2.31'
     ]
 
     repositories {
