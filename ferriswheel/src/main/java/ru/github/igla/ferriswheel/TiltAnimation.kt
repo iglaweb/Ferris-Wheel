@@ -15,14 +15,14 @@ import android.view.animation.LinearInterpolator
 internal const val CABIN_TILT_MIN = 1.0f
 internal const val CABIN_TILT_MAX = 3.0f
 
+private const val DURATION_TILT_MIN = 400L
+private const val DURATION_TILT_MAX = 800L
+
 internal class TiltAnimation {
 
     interface TiltValueChangeListener {
         fun onTiltChange(angle: Float)
     }
-
-    private val DURATION_TILT_MIN = 400L
-    private val DURATION_TILT_MAX = 800L
 
     private var animator: ValueAnimator? = null
 

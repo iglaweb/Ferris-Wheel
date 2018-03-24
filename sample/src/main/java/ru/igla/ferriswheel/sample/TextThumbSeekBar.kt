@@ -9,7 +9,6 @@ import android.graphics.Typeface
 import android.support.v7.widget.AppCompatSeekBar
 import android.text.TextPaint
 import android.util.AttributeSet
-import ru.github.igla.ferriswheel.dp
 
 class TextThumbSeekBar :
         AppCompatSeekBar {
@@ -18,7 +17,7 @@ class TextThumbSeekBar :
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, attributeSetId: Int) : super(context, attrs, attributeSetId)
 
-    private val thumbSize = context.dp(16f)
+    private val thumbSize = context.dpF(16f)
     private val textPaint: TextPaint = TextPaint().apply {
         color = Color.WHITE
         textSize = context.sp(14f)
@@ -44,4 +43,5 @@ class TextThumbSeekBar :
     }
 
     private fun Context.sp(sp: Float): Float = sp * resources.displayMetrics.scaledDensity
+    private fun Context.dpF(dp: Float): Float = dp * resources.displayMetrics.density
 }

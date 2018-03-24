@@ -31,6 +31,22 @@ internal class StateController(
         configure(bounds, orientation)
     }
 
+    private val rotateListener = object : RotateAnimation.OnRotateAngleValueChangeListener {
+        override fun onChangeRotateAngle(angle: Float) {
+            wheelBaseDrawer.rotateAngle = angle
+            callback.invalidateDrawable(null)
+        }
+    }
+
+    private val tiltListener = object : TiltAnimation.TiltValueChangeListener {
+        override fun onTiltChange(angle: Float) {
+            cabinImages.forEachNoIterator { item ->
+                item.tiltAngle = angle
+            }
+            callback.invalidateDrawable(null)
+        }
+    }
+
     fun setData(viewConfig: WheelViewConfig) {
         cabinImages = createListOfCabins(viewConfig)
         configure(lastBounds, orientation)
@@ -104,22 +120,6 @@ internal class StateController(
         wheelBaseDrawer.onPostDraw(canvas)
     }
 
-
-    private val rotateListener = object : RotateAnimation.OnRotateAngleValueChangeListener {
-        override fun onChangeRotateAngle(angle: Float) {
-            wheelBaseDrawer.rotateAngle = angle
-            callback.invalidateDrawable(null)
-        }
-    }
-
-    private val tiltListener = object : TiltAnimation.TiltValueChangeListener {
-        override fun onTiltChange(angle: Float) {
-            cabinImages.forEachNoIterator { item ->
-                item.tiltAngle = angle
-            }
-            callback.invalidateDrawable(null)
-        }
-    }
 
     fun startAnimation() {
         if (rotateAnimation.isRunning

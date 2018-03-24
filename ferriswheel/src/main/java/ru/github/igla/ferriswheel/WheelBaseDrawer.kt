@@ -11,13 +11,13 @@ import kotlin.math.sin
  * Created by igor-lashkov on 11/01/2018.
  */
 
+private const val PILL_ANGLE_FROM = 110.0
+private const val PILL_ANGLE_TO = 70.0
+
 internal class WheelBaseDrawer(private val context: Context, private val config: WheelViewConfig) : IWheelDrawer {
 
-    private val PILL_ANGLE_FROM = 110.0
-    private val PILL_ANGLE_TO = 70.0
-
     private val dp6 = context.dpF(6f)
-    private val dp10 = context.dpF(10f).toDouble()
+    private val dp10 = context.dp(10f)
     private val dp14 = context.dpF(14f)
     private val dp16 = context.dpF(16f)
     private val dp56 = context.dpF(56f)
@@ -25,8 +25,8 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
     private val dp32 = context.dpF(32f)
     private val dp34 = context.dpF(34f)
 
-    private val minRadius: Double = context.dpF(100f).toDouble()
-    private val radiusWheelForCabin: Double = context.dpF(150f).toDouble() //for 42dp
+    private val minRadius: Double = context.dp(100f)
+    private val radiusWheelForCabin: Double = context.dp(150f) //for 42dp
 
     var radius = 0.0
         set(value) {
@@ -256,7 +256,6 @@ internal class WheelBaseDrawer(private val context: Context, private val config:
             val half = size / 2f
             val fromX = centerPoint.x - half
             val fromY = centerPoint.y - half
-
             rewind()
             // top left
             moveTo(fromX + half * 0.5f, fromY + half * 0.84f)
