@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 1.1.0 *(2018-03-24)*
+----------------------------
+
+ * Add new API to change cabin and wheel color, see monochrome sample
+ * Reduce methods count
+ * Use kotlin plugin version 1.2.31
+ 
+ 
 Version 1.0.1 *(2018-03-16)*
 ----------------------------
 
