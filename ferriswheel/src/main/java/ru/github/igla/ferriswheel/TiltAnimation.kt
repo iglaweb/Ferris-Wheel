@@ -2,7 +2,6 @@ package ru.github.igla.ferriswheel
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.util.FloatProperty
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
@@ -37,12 +36,10 @@ internal class TiltAnimation {
     }
 
     private fun createAnimator(listener: TiltValueChangeListener, rotateSpeed: Float): ObjectAnimator {
-        val property = object : FloatProperty<TiltValueChangeListener>("angle") {
+        val property = object : FloatProperty<TiltValueChangeListener>() {
             override fun setValue(obj: TiltValueChangeListener, value: Float) {
                 listener.onTiltChange(value)
             }
-
-            override fun get(obj: TiltValueChangeListener) = 0f
         }
 
         val ratioSpeed = rotateSpeed / MAX_ROTATE_SPEED

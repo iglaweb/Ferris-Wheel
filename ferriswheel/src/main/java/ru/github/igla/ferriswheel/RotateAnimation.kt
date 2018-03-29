@@ -2,7 +2,6 @@ package ru.github.igla.ferriswheel
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.util.FloatProperty
 import android.view.animation.LinearInterpolator
 
 /**
@@ -46,13 +45,11 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
     }
 
     private fun createAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
-        val floatProperty = object : FloatProperty<RotateAnimation>("angle") {
-            override fun setValue(obj: RotateAnimation, angle: Float) {
-                lastChangeAngle = angle
-                listener.onChangeRotateAngle(angle)
+        val floatProperty = object : FloatProperty<RotateAnimation>() {
+            override fun setValue(obj: RotateAnimation, value: Float) {
+                lastChangeAngle = value
+                listener.onChangeRotateAngle(value)
             }
-
-            override operator fun get(obj: RotateAnimation): Float = 0f
         }
         return ObjectAnimator.ofFloat(this, floatProperty, from, to).apply {
             currentPlayTime = viewConfig.getDurationOffset(lastChangeAngle)

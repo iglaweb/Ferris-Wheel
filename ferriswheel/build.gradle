@@ -40,6 +40,12 @@ android {
     }
 }
 
+android {
+    lintOptions {
+        abortOnError true
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
 }
