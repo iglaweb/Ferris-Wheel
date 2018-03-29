@@ -6,7 +6,7 @@ jdk: oraclejdk8
 
 env:
  matrix:
-  - ANDROID_BUILD_TOOLS_VERSION=27.0.2 ANDROID_API_LEVEL=27
+  - ANDROID_BUILD_TOOLS_VERSION=27.0.3 ANDROID_API_LEVEL=27
 android:
   components:
     - platform-tools
