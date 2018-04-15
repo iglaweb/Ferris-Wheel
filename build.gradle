@@ -7,7 +7,7 @@ buildscript {
             'buildTools'    : '27.0.3',
             'minSdk'        : 15,
             'targetSdk'     : 27,
-            'supportLibrary': '27.1.0',
+            'supportLibrary': '27.1.1',
             'kotlin'        : '1.2.31'
     ]
 
@@ -16,7 +16,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
