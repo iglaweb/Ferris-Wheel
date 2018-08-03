@@ -7,7 +7,7 @@ import android.graphics.*
  * Created by igor-lashkov on 17/01/2018.
  */
 
-internal class CabinImage(context: Context, private val imageNumber: Int, private val startAngle: Double, colorStyle: CabinStyle) {
+internal class CabinImage(context: Context, val imageNumber: Int, private val startAngle: Double, colorStyle: CabinStyle) {
 
     val wheelPos: PointF = PointF()
 
@@ -40,9 +40,9 @@ internal class CabinImage(context: Context, private val imageNumber: Int, privat
         }
     }
 
-    fun getAngleOffset(rotateAngle: Float): Double = (startAngle + rotateAngle) % 360.0
+    internal fun getAngleOffset(rotateAngle: Float): Double = (startAngle + rotateAngle) % 360.0
 
-    fun drawCabin(canvas: Canvas, position: PointF, size: Int, scale: Float) {
+    internal fun drawCabin(canvas: Canvas, position: PointF, size: Int, scale: Float) {
         canvas.apply {
             save()
             val arcRadiusScale = arcRadius * scale

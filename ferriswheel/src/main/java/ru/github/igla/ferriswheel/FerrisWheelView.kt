@@ -25,6 +25,10 @@ class FerrisWheelView : View {
         fun onClickCenter(e: MotionEvent)
     }
 
+    interface OnClickCabinListener {
+        fun onClickCabin(cabinNumber: Int, e: MotionEvent)
+    }
+
     private val cabinColorsDefault: List<CabinStyle> = resources.getStringArray(R.array.cabin_colors_array).map { color ->
         CabinStyle(Color.parseColor(color), cabinLineColorDefault)
     }
@@ -79,6 +83,12 @@ class FerrisWheelView : View {
             field = value
             config.centerListener = value
         }
+    var cabinListener: FerrisWheelView.OnClickCabinListener? = null
+        set(value) {
+            field = value
+            config.cabinListener = value
+        }
+
     var numberOfCabins: Int = DEFAULT_CABINS_NUMBER
         set(value) {
             if (value < 0) {
@@ -152,7 +162,7 @@ class FerrisWheelView : View {
             }
             this.gestureDetector = GestureDetector(context, InteractGestureListener
             { e ->
-                config.centerListener?.let { performClickWheel(it, e) } ?: false
+                performClickEvent(config, e)
             })
             wheelDrawable = WheelDrawable(context).apply {
                 callback = this@FerrisWheelView
@@ -171,10 +181,19 @@ class FerrisWheelView : View {
         }
     }
 
-    private fun performClickWheel(listener: OnClickCenterListener, e: MotionEvent): Boolean {
-        if (wheelDrawable.isCenterCoordinate(e.x, e.y)) {
-            listener.onClickCenter(e)
-            return true
+    private fun performClickEvent(wheelViewConfig: WheelViewConfig, e: MotionEvent): Boolean {
+        wheelViewConfig.cabinListener?.let { listener ->
+            val cabin = wheelDrawable.findCabinByPoint(e.x, e.y)
+            if (cabin != null) {
+                listener.onClickCabin(cabin.imageNumber, e)
+                return true
+            }
+        }
+        wheelViewConfig.centerListener?.let { listener ->
+            if (wheelDrawable.isCenterCoordinate(e.x, e.y)) {
+                listener.onClickCenter(e)
+                return true
+            }
         }
         return false
     }

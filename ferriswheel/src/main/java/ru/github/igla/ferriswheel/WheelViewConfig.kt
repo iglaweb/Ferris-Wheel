@@ -14,6 +14,7 @@ internal class WheelViewConfig(
         var cabinSize: Int = -1,
         var startAngle: Float = 0f,
         var centerListener: FerrisWheelView.OnClickCenterListener? = null,
+        var cabinListener: FerrisWheelView.OnClickCabinListener? = null,
         var baseColor: Int,
         var wheelColor: Int,
         var cabinColors: List<CabinStyle>,

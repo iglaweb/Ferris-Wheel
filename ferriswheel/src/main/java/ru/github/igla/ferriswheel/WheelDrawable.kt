@@ -27,6 +27,8 @@ internal class WheelDrawable(private val context: Context) :
     fun isCenterCoordinate(x: Float, y: Float): Boolean = stateController?.isCenterCoordinate(x, y)
             ?: false
 
+    fun findCabinByPoint(x: Float, y: Float): CabinImage? = stateController?.getCabinByPoint(x, y)
+
     fun build(viewConfig: WheelViewConfig) {
         if (stateController == null) {
             stateController = StateController(drawableCallback, context, viewConfig, bounds)

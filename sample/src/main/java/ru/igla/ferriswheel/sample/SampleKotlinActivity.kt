@@ -25,7 +25,13 @@ class SampleKotlinActivity : AppCompatActivity() {
 
     private val clickCenterListener = object : FerrisWheelView.OnClickCenterListener {
         override fun onClickCenter(e: MotionEvent) {
-            Toast.makeText(this@SampleKotlinActivity, "Click CENTER $e", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@SampleKotlinActivity, "Click center $e", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private val clickCabinListener = object : FerrisWheelView.OnClickCabinListener {
+        override fun onClickCabin(cabinNumber: Int, e: MotionEvent) {
+            Toast.makeText(this@SampleKotlinActivity, "Click cabin $cabinNumber", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -35,6 +41,7 @@ class SampleKotlinActivity : AppCompatActivity() {
         initSettingsBottomSheet()
         ferrisWheelView.apply {
             centerListener = this@SampleKotlinActivity.clickCenterListener
+            cabinListener = this@SampleKotlinActivity.clickCabinListener
             cabinColors = arrayOf("#6eabdf", "#ffb140", "#ce4d5b", "#96bd58", "#ed7a50").map { color ->
                 CabinStyle(Color.parseColor(color), Color.BLACK)
             }
@@ -113,12 +120,12 @@ class SampleKotlinActivity : AppCompatActivity() {
                 }
             })
         }
-        view_options_header.setOnClickListener({
+        view_options_header.setOnClickListener {
             behavior.state = if (behavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 BottomSheetBehavior.STATE_EXPANDED
             } else {
                 BottomSheetBehavior.STATE_COLLAPSED
             }
-        })
+        }
     }
 }

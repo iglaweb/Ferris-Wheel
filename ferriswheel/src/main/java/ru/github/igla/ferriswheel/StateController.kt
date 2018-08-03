@@ -105,21 +105,42 @@ internal class StateController(
     fun isCenterCoordinate(x: Float, y: Float): Boolean = isPointInsideRadius(
             x, y, wheelBaseDrawer.centerPoint, (wheelBaseDrawer.radius / 2.0).toFloat())
 
+    fun getCabinByPoint(x: Float, y: Float): CabinImage? {
+        val cabinSize = wheelBaseDrawer.cabinSize
+        val cabinSizeHalf = cabinSize / 2f
+        cabinImages.forEachNoIterator { item ->
+            val left = item.wheelPos.x - cabinSizeHalf
+            val top = item.wheelPos.y
+            val right = item.wheelPos.x + cabinSizeHalf
+            val bottom = item.wheelPos.y + cabinSize
+            if (contains(left, top, right, bottom, x, y)) {
+                return item
+            }
+        }
+        return null
+    }
+
+    private fun contains(left: Float, top: Float, right: Float, bottom: Float, x: Float, y: Float): Boolean {
+        return (left < right && top < bottom
+                && x >= left && x < right && y >= top && y < bottom)
+    }
+
     fun drawWheel(canvas: Canvas) {
         wheelBaseDrawer.onPreDraw(canvas)
+        val cabinSize = wheelBaseDrawer.cabinSize
+        val ratioCabinSize = wheelBaseDrawer.ratioCabinSize.toFloat()
         cabinImages.forEachNoIterator { item ->
             val offsetAngle = getAngleOffset(item)
             wheelBaseDrawer.setPointPosAsWheel(item.wheelPos, offsetAngle)
             item.drawCabin(
                     canvas,
                     item.wheelPos,
-                    wheelBaseDrawer.cabinSize,
-                    wheelBaseDrawer.ratioCabinSize.toFloat()
+                    cabinSize,
+                    ratioCabinSize
             )
         }
         wheelBaseDrawer.onPostDraw(canvas)
     }
-
 
     fun startAnimation() {
         if (rotateAnimation.isRunning
