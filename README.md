@@ -86,6 +86,7 @@ Or you can stop/pause/resume animation by the following methods:
 |fwv_cabinSize|dimension|42dp|the size of each cabin|
 |fwv_cabinsNumber|integer|8|the number of cabins on the wheel|
 |fwv_isClockwise|boolean|true|toogle the rotate direction|
+|fwv_isAutoRotate|boolean|true|start rotating wheel automatically after initialization|
 |fwv_rotateSpeed|integer|6|wheel speed rotation measured in degrees|
 |fwv_startAngle|float|0|angle at which wheel will start to rotate|
 |fwv_wheelStrokeColor|color|![#73302b](https://placehold.it/15/73302b/000000?text=+) `#73302b`|with this color the wheel will be filled|
