@@ -1,10 +1,13 @@
 Change Log
 ==========
 
-Version 1.1.1 *(2018-03-30)*
+Version 1.2 *(2018-08-03)*
 ----------------------------
 
- * Fix api level compatibility
+ * Add new API to add click listener for cabin
+ * Add isAutoRotate attribute
+ * Use kotlin plugin version 1.2.60
+ 
  
 Version 1.1.0 *(2018-03-24)*
 ----------------------------

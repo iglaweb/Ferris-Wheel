@@ -37,7 +37,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'ru.github.igla:ferriswheel:1.1.1'
+    implementation 'ru.github.igla:ferriswheel:1.2'
 }
 ```
 
@@ -47,7 +47,7 @@ dependencies {
 <dependency>
   <groupId>ru.github.igla</groupId>
   <artifactId>ferriswheel</artifactId>
-  <version>1.1.1</version>
+  <version>1.2</version>
   <type>pom</type>
 </dependency>
 ```
