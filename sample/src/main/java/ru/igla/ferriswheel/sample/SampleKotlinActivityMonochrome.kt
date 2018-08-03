@@ -17,7 +17,6 @@ class SampleKotlinActivityMonochrome : AppCompatActivity() {
         setContentView(R.layout.activity_main_monochrome)
         ferrisWheelView.apply {
             coreStyle = CoreStyle(Color.WHITE, Color.WHITE)
-            startAnimation()
         }
     }
 }

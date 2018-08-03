@@ -102,6 +102,11 @@ class FerrisWheelView : View {
             field = value
             config.isClockwise = value
         }
+    var isAutoRotate: Boolean = true
+        set(value) {
+            field = value
+            config.isAutoRotate = value
+        }
     var startAngle: Float = 0f
         set(value) {
             if (value < 0f) {
@@ -140,6 +145,7 @@ class FerrisWheelView : View {
             if (attrs != null) {
                 context.obtainStyledAttributes(attrs, R.styleable.FerrisWheelView)?.apply {
                     isClockwise = getBoolean(R.styleable.FerrisWheelView_fwv_isClockwise, true)
+                    isAutoRotate = getBoolean(R.styleable.FerrisWheelView_fwv_isAutoRotate, true)
                     rotateDegreeSpeedInSec = getInt(R.styleable.FerrisWheelView_fwv_rotateSpeed, DEFAULT_ROTATES_SPEED_DEGREE_IN_SEC)
                     startAngle = getFloat(R.styleable.FerrisWheelView_fwv_startAngle, 0f)
                     cabinSize = getDimensionPixelSize(R.styleable.FerrisWheelView_fwv_cabinSize, -1)
@@ -196,6 +202,13 @@ class FerrisWheelView : View {
             }
         }
         return false
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (isAutoRotate) {
+            startAnimation()
+        }
     }
 
     override fun onDetachedFromWindow() {

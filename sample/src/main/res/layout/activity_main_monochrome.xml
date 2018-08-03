@@ -19,6 +19,7 @@
         app:fwv_cabinFillColor="@color/white"
         app:fwv_cabinLineStrokeColor="@color/white"
         app:fwv_cabinsNumber="10"
+        app:fwv_isAutoRotate="true"
         app:fwv_isClockwise="true"
         app:fwv_rotateSpeed="30"
         app:fwv_wheelStrokeColor="@color/white" />

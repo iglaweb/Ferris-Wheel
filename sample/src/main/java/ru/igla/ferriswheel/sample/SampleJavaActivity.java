@@ -32,15 +32,25 @@ public class SampleJavaActivity extends AppCompatActivity {
                 ferrisWheelView.stopAnimation();
             }
         });
-        ferrisWheelView.setCenterListener(clickListener);
+        ferrisWheelView.setCenterListener(clickCenterListener);
+        ferrisWheelView.setCabinListener(clickCabinListener);
         ferrisWheelView.startAnimation();
     }
 
     @NonNull
-    private FerrisWheelView.OnClickCenterListener clickListener = new FerrisWheelView.OnClickCenterListener() {
+    private final FerrisWheelView.OnClickCenterListener clickCenterListener = new FerrisWheelView.OnClickCenterListener() {
         @Override
         public void onClickCenter(@NotNull MotionEvent e) {
-            Toast.makeText(SampleJavaActivity.this, "Click image " + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SampleJavaActivity.this, "Click center " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @NonNull
+    private final FerrisWheelView.OnClickCabinListener clickCabinListener = new FerrisWheelView.OnClickCabinListener() {
+
+        @Override
+        public void onClickCabin(int cabinNumber, @NotNull MotionEvent e) {
+            Toast.makeText(SampleJavaActivity.this, "Click cabin " + String.valueOf(cabinNumber), Toast.LENGTH_LONG).show();
         }
     };
 }

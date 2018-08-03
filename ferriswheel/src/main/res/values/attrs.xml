@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="FerrisWheelView">
         <attr name="fwv_isClockwise" format="boolean" />
+        <attr name="fwv_isAutoRotate" format="boolean" />
         <attr name="fwv_startAngle" format="float" />
         <attr name="fwv_cabinSize" format="dimension" />
         <attr name="fwv_cabinsNumber" format="integer" />
