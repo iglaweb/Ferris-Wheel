@@ -253,12 +253,3 @@ class FerrisWheelView : View {
         return false
     }
 }
-
-@Suppress("DEPRECATION")
-internal fun Context.getColorRes(id: Int): Int {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        getColor(id)
-    } else {
-        resources.getColor(id)
-    }
-}

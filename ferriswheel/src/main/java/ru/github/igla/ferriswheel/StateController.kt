@@ -31,15 +31,15 @@ internal class StateController(
         configure(bounds, orientation)
     }
 
-    private val rotateListener = object : RotateAnimation.OnRotateAngleValueChangeListener {
-        override fun onChangeRotateAngle(angle: Float) {
+    private val rotateListener = object : OnAngleChangeListener {
+        override fun onValueChange(angle: Float) {
             wheelBaseDrawer.rotateAngle = angle
             callback.invalidateDrawable(null)
         }
     }
 
-    private val tiltListener = object : TiltAnimation.TiltValueChangeListener {
-        override fun onTiltChange(angle: Float) {
+    private val tiltListener = object : OnAngleChangeListener {
+        override fun onValueChange(angle: Float) {
             cabinImages.forEachNoIterator { item ->
                 item.tiltAngle = angle
             }

@@ -22,7 +22,7 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
     var isRunning = animator?.isRunning ?: false
         private set
 
-    fun startAnimation(listener: OnRotateAngleValueChangeListener) {
+    fun startAnimation(listener: OnAngleChangeListener) {
         stopAnimation()
         val rotateSpeed = viewConfig.rotateSpeed
         if (rotateSpeed > 0) {
@@ -44,14 +44,14 @@ internal class RotateAnimation(private val viewConfig: WheelViewConfig) {
         }
     }
 
-    private fun createAnimator(listener: OnRotateAngleValueChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
-        val floatProperty = object : FloatProperty<RotateAnimation>() {
-            override fun setValue(obj: RotateAnimation, value: Float) {
-                lastChangeAngle = value
-                listener.onChangeRotateAngle(value)
+    private fun createAnimator(listener: OnAngleChangeListener, rotateSpeed: Int, from: Float, to: Float): ObjectAnimator {
+        val property = FloatProperty.createAngleProperty(object : OnAngleChangeListener {
+            override fun onValueChange(angle: Float) {
+                lastChangeAngle = angle
+                listener.onValueChange(angle)
             }
-        }
-        return ObjectAnimator.ofFloat(this, floatProperty, from, to).apply {
+        })
+        return ObjectAnimator.ofFloat(listener, property, from, to).apply {
             currentPlayTime = viewConfig.getDurationOffset(lastChangeAngle)
             duration = getDurationFromSpeed(rotateSpeed)
             interpolator = animInterpolator

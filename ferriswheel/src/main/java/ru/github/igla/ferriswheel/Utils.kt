@@ -2,6 +2,7 @@ package ru.github.igla.ferriswheel
 
 import android.content.Context
 import android.graphics.Paint
+import android.os.Build
 
 
 internal fun Context.dp(dp: Float): Double = dpF(dp).toDouble()
@@ -23,5 +24,14 @@ internal inline fun <E> List<E>.forEachNoIterator(block: (E) -> Unit) {
     while (index < size) {
         block(get(index))
         index++
+    }
+}
+
+@Suppress("DEPRECATION")
+internal fun Context.getColorRes(id: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getColor(id)
+    } else {
+        resources.getColor(id)
     }
 }

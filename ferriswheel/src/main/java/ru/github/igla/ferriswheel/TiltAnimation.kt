@@ -19,28 +19,20 @@ private const val DURATION_TILT_MAX = 800L
 
 internal class TiltAnimation {
 
-    interface TiltValueChangeListener {
-        fun onTiltChange(angle: Float)
-    }
-
     private var animator: ValueAnimator? = null
 
     private val animInterpolator = LinearInterpolator()
     private val durationInterpolator = DecelerateInterpolator()
 
-    fun startAnimation(rotateSpeed: Int, listener: TiltValueChangeListener) {
+    fun startAnimation(rotateSpeed: Int, listener: OnAngleChangeListener) {
         cancelAnimation()
         createAnimator(listener, rotateSpeed.toFloat()).apply {
             start()
         }
     }
 
-    private fun createAnimator(listener: TiltValueChangeListener, rotateSpeed: Float): ObjectAnimator {
-        val property = object : FloatProperty<TiltValueChangeListener>() {
-            override fun setValue(obj: TiltValueChangeListener, value: Float) {
-                listener.onTiltChange(value)
-            }
-        }
+    private fun createAnimator(listener: OnAngleChangeListener, rotateSpeed: Float): ObjectAnimator {
+        val property = FloatProperty.createAngleProperty(listener)
 
         val ratioSpeed = rotateSpeed / MAX_ROTATE_SPEED
         val calcAngle = CABIN_TILT_MIN + ratioSpeed * (CABIN_TILT_MAX - CABIN_TILT_MIN)
