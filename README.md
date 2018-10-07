@@ -20,6 +20,12 @@ An Android Library used to implement an animated Ferris Wheel in android.
 ![Preview-demo](/art/preview_demo.gif "Preview demo")  ![Monochrome-sample](/art/preview_demo_monochrome.gif "Monochrome sample")<br />
 Inspired by the one-color [Planet Coaster loading screen](https://youtu.be/5zHhW5TLW2s)
 
+## Mentions
+
+* Featured in [25 new Android libraries, projects and tools worthy to check in Spring 2018](https://medium.com/@mmbialas/25-new-android-libraries-projects-and-tools-worthy-to-check-in-spring-2018-68e3c5e93568)
+* Mentioned in [Android Weekly issue 332](http://androidweekly.net/issues/issue-322)
+* Featured in [12 New Android Libraries - Full HD](https://www.youtube.com/watch?v=22k5uak4yYg)
+
 ## Sample Project
 
 For more information how to use the library in Kotlin/Java checkout [Sample App](https://github.com/iglaweb/Ferris-Wheel/tree/master/sample/) in repository.
